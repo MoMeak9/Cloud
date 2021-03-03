@@ -4,25 +4,28 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 router.beforeEach((to, from, next) => {
-  if(to.path == '/') {
+  if(to.path === '/') {
     next()
-  }else if(to.path == '/login') {
+  }else if(to.path === '/login') {
     document.title = to.meta.title
     next()
-  }else if(to.path == '/cloud') {
+  }else if(to.path === '/cloud') {
     document.title = to.meta.title
     next()
-  }else if(to.path == '/register') {
+  }else if(to.path === '/register') {
     document.title = to.meta.title
     next()
-  }else if(to.path == '/setting') {
+  }else if(to.path === '/setting') {
     document.title = to.meta.title
     next()
-  }else if(to.path == '/admin') {
+  }else if(to.path === '/admin') {
+    document.title = to.meta.title
+    next()
+  }else if(to.path === '/check') {
     document.title = to.meta.title
     next()
   }else {
-    next({path: '/'})
+    document.title = '404 error'
   }
 })
 

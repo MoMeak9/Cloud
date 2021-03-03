@@ -6,6 +6,8 @@ import Cloud from '../views/Cloud.vue'
 import Register from '../views/Register.vue'
 import Setting from '../views/Setting.vue'
 import Admin from '../views/Admin.vue'
+import Page404 from "@/views/Page404.vue";
+import Check from "@/views/Check.vue";
 
 Vue.use(Router)
 
@@ -52,12 +54,28 @@ export default new Router({
           }
         },
         {
-          path: '/delete',
-          name: 'delete',
+          path: '/admin',
+          name: 'admin',
           component: Admin,
           meta: {
             title: '用户管理'
           }
+        },
+        {
+            path: '/check',
+            name: 'check',
+            component: Check,
+            meta: {
+                title: '文件审核'
+            }
+        },
+        {
+            path: "/404",
+            name: "notFound",
+            component: Page404
+        }, {
+            path: "*", // 此处需特别注意置于最底部
+            redirect: "/404"
         }
     ]
 })
