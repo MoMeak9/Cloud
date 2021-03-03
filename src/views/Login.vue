@@ -28,16 +28,16 @@
       </el-form-item>
 
       <el-form-item style="user-select: none;">
-        <el-input type="password" v-model="password" placeholder="请输入密码..."></el-input>
+        <el-input show-password v-model="password" placeholder="请输入密码..."></el-input>
       </el-form-item>
 
       <el-form-item style="width: 100%">
-        <el-button type="primary" style="width: 100%;background: #4169E1;border: none" @click="userLogin()">登录
+        <el-button type="primary" class="button-login" @click="userLogin()">登录
         </el-button>
       </el-form-item>
 
       <el-form-item style="width: 100%">
-        <el-button type="primary" class="button-border" @click="goRegister()">还没有账号？</el-button>
+        <el-button type="primary" class="button-register" @click="goRegister()">还没有账号？</el-button>
       </el-form-item>
     </el-form>
 
@@ -68,12 +68,12 @@ export default {
       this.$router.push({path: '/register'});
     },
     userLogin: function () {
-      if (this.userName != '' && this.password != '') {
+      if (this.userName !== '' && this.password !== '') {
         this.$axios.post('http://' + this.baseHost + '/mycloud/userController/login', this.$qs.stringify({
           userName: this.userName,
           password: this.password
         })).then((response) => {
-          if (response.data.message == "") {
+          if (response.data.message === "") {
             this.$message({
               message: '登录成功！即将进入MyCloud！',
               type: 'success'
@@ -81,10 +81,9 @@ export default {
 
             this.$store.commit('saveUserName', this.userName);
             this.$store.commit('saveUserUUID', response.data.userUUID);
-            this.$store.commit('saveModUserUUID', response.data.userUUID);
-
-            clearTimeout(this.timer);  //清除延迟执行 
-            this.timer = setTimeout(() => {   //设置延迟执行
+            //跳转主页
+            clearTimeout(this.timer);
+            this.timer = setTimeout(() => {
               this.$router.push({path: '/cloud'});
             }, 1500);
           } else {
@@ -97,17 +96,17 @@ export default {
           console.log(error);
         });
       } else {
-        if (this.userName == '' && this.password == '') {
+        if (this.userName === '' && this.password === '') {
           this.$message({
             message: '请输入用户名和密码！',
             type: 'warning'
           });
-        } else if (this.userName == '') {
+        } else if (this.userName === '') {
           this.$message({
             message: '请输入用户名！',
             type: 'warning'
           });
-        } else if (this.password == '') {
+        } else if (this.password === '') {
           this.$message({
             message: '请输入密码！',
             type: 'warning'
@@ -122,7 +121,7 @@ export default {
 <style scoped>
 #login {
   background-size: cover;
-  background: black;
+  background: url("../assets/image/69866362.png") fixed no-repeat top;
   height: 100%;
   width: 100%;
   position: fixed;
@@ -160,21 +159,26 @@ export default {
   z-index: 1;
 }
 
-.button-border {
+.button-register {
   width: 100%;
   background: rgba(45, 45, 45, 0.33);
-  /*   border: none; */
   border: 1px solid #40E0D0;
-  /*   box-shadow: 0 0 25px rgba(155,89,182,.5); */
-  /*   box-shadow: 0 0 25px rgba(64,224,208,.5); */
 }
-
-.button-border:hover {
+.button-register:hover {
   width: 100%;
   background: rgba(45, 45, 45, 0.33);
-  /*   border: none; */
   border: 1px solid #40E0D0;
-  /*   box-shadow: 0 0 25px rgba(155,89,182,.5); */
-  box-shadow: 0 0 25px rgba(64, 224, 208, .5);
+  box-shadow: 0 0 25px rgba(64,224,208,.5);
+}
+.button-login {
+  width: 100%;
+  background: rgb(61, 226, 226);
+  border: 2px solid #3db8ab;
+}
+.button-login:hover {
+  width: 100%;
+  background: rgb(45, 123, 96);
+  border: 2px solid #40e0d0;
+  box-shadow: 0 0 25px rgba(64,224,208,.5);
 }
 </style>

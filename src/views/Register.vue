@@ -47,11 +47,11 @@
         </el-form-item>
 
         <el-form-item style="width: 100%">
-          <el-button type="primary" style="width: 100%;background: #4169E1;border: none" @click="userRegister()">注册</el-button>
+          <el-button type="primary" class="button-register" @click="userRegister()">注册</el-button>
         </el-form-item>
         
         <el-form-item style="width: 100%">
-          <el-button type="primary" class="button-border" @click="goLogin()">已经有账号</el-button>
+          <el-button type="primary" class="button-login" @click="goLogin()">已经有账号</el-button>
         </el-form-item>
       </el-form>
       
@@ -171,15 +171,26 @@ export default {
   background-position: 50% 50%;
   z-index: 1;
 }
-.button-border {
+.button-login {
   width: 100%;
   background: rgba(45, 45, 45, 0.33);
   border: 1px solid #40E0D0;
 }
-.button-border:hover {
+.button-login:hover {
   width: 100%;
   background: rgba(45, 45, 45, 0.33);
   border: 1px solid #40E0D0;
+  box-shadow: 0 0 25px rgba(64,224,208,.5);
+}
+.button-register {
+  width: 100%;
+  background: rgb(61, 226, 226);
+  border: 2px solid #3db8ab;
+}
+.button-register:hover {
+  width: 100%;
+  background: rgb(45, 123, 96);
+  border: 2px solid #40e0d0;
   box-shadow: 0 0 25px rgba(64,224,208,.5);
 }
 </style>
