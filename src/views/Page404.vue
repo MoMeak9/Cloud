@@ -1,10 +1,14 @@
 <template>
+<div id = 'page404'>
 
+</div>
 </template>
 
 <script>
 export default {
-  name: "Page404"
+  name: "page404",
+  data(){
+  }
 }
 </script>
 

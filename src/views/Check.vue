@@ -1,13 +1,14 @@
 <template>
+<div id = 'check'>
 
+</div>
 </template>
 
 <script>
 export default {
-  name: "Check"
+  name: "check"
 }
 </script>
-
 <style scoped>
 
 </style>
