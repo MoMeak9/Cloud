@@ -55,15 +55,6 @@
 
           <el-table-column
               sortable
-              header-align="center"
-              align="center"
-              prop="regAge"
-              label="年龄"
-              :width="flag ? '100' : '75'">
-          </el-table-column>
-
-          <el-table-column
-              sortable
               show-overflow-tooltip
               header-align="center"
               align="center"
@@ -79,7 +70,7 @@
               align="center"
               prop="regTime"
               v-if="flag"
-              label="注册">
+              label="注册时间">
           </el-table-column>
 
           <el-table-column
@@ -128,6 +119,9 @@
       <el-footer>
         <el-form class="login-container" label-position="left" label-width="0px">
           <el-form-item style="width: 100%">
+            <el-button type="primary" class="button-border" @click="goCheck()">文件审核</el-button>
+          </el-form-item>
+          <el-form-item style="width: 100%">
             <el-button type="primary" class="button-border" @click="goYun()">返回</el-button>
           </el-form-item>
         </el-form>
@@ -161,7 +155,7 @@ export default {
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.$router.push({path: '/login'});
-      }, 1500);
+      }, 150000);
     //  指定管理员
     } else if (this.$store.state.userName === 'admin') {
       this.getUsersInfo();
@@ -200,9 +194,7 @@ export default {
     },
     getUsersInfo: function () {
       this.$axios.post('http://' + this.baseHost + '/mycloud/userController/getUsers', this.$qs.stringify({})).then((response) => {
-//         console.log(response.data.userSpace);
         this.users = response.data.usersList;
-//         console.log(this.users);
         for (let i = 0; i < this.users.length; i++) {
           this.users[i]['userSpace'] = response.data.userSpace[i];
           if (this.users[i].regTime === '') {
@@ -262,6 +254,9 @@ export default {
       }).catch(() => {
         this.test = 2;
       });
+    },
+    goCheck:function (){
+      this.$router.push({path:'/check'})
     }
   }
 }
