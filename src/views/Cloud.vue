@@ -24,7 +24,7 @@
       <el-col :span="14">
         <el-container>
           <el-main class="head-logo">
-            MyCloud
+            <h2>MyCloud</h2>
           </el-main>
         </el-container>
       </el-col>
@@ -261,20 +261,6 @@
         <img v-for="item in images" :src="item.src" :key="item.index" height="100" v-show="false">
     </viewer>
 
-<!--     <el-dialog
-      style="padding:0px;"
-      :modal-append-to-body='false'
-      :visible.sync="musicPlayVisible"
-      :width="flag?'50%':'350px'">
-      
-      <span slot="title">
-        <i class="el-icon-video-play el-icon--left"></i>音乐播放
-      </span>
-      
-      <aplayer :audio="audio" :lrcType="0" />
-    
-    </el-dialog> -->
-
     <aplayer ref="aplayer" :audio="audio" :lrcType="0" fixed :mini="false" :listFolded="true" :autoplay="true" v-if="musicFlag"/>
 
     <div class="video-container" v-show="videoFlag">
@@ -431,9 +417,8 @@ export default {
     }
   },
   watch: {
-    search(val){//普通的watch监听
-//       console.log("search: "+ val);
-      if(val == '') {
+    search(val){
+      if(val === '') {
         this.getFolderFiles(this.nowFolder.path, this.nowFolder.depth + 1);
       }
     }
@@ -1911,7 +1896,7 @@ export default {
   @import '../../../Cloud/src/assets/css/style.css';
   
   #cloud {
-    background: black;
+    background: url("../assets/image/68128465.png") fixed no-repeat top;
     background-size:cover;
     position: fixed;
     height: 100%;
@@ -1930,7 +1915,6 @@ export default {
   }
   .head {
     margin: 0 auto;
-    margin-top: 0;
     border-bottom: 1px solid white;
     position: relative;
     z-index: 3;
@@ -1940,9 +1924,7 @@ export default {
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 5px;
-/*     color: #9370DB; */
-/*     color: #20B2AA; */
-    color: #42A3B3;
+    color: white;
     user-select: none;
     text-align: left;
   }
@@ -1950,14 +1932,13 @@ export default {
     padding-top: 20px;
     padding-bottom: 10px;
     padding-right: 10px;
-/*     color: #337AB7; */
     cursor: pointer;
     color: #409EFF;
     text-align: right;
   }
   .body {
     margin: 20px auto;
-    box-shadow: 0 0 25px rgba(155,89,182,.5);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
     position: relative;
     z-index: 3;
   }
@@ -2024,8 +2005,7 @@ export default {
     font-size: 13px;
   }
   #pv-buttons {
-    list-style: none;
-    list-style-image: none;
+    list-style: none none;
     margin: 0;
     padding: 0;
   }
