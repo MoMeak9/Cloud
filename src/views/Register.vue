@@ -28,11 +28,11 @@
         </el-form-item>
 
         <el-form-item style="user-select: none;">
-          <el-input type="password" v-model="password" placeholder="输入密码"></el-input>
+          <el-input show-password v-model="password" placeholder="输入密码"></el-input>
         </el-form-item>
         
         <el-form-item style="user-select: none;">
-          <el-input type="password" v-model="matchPassword" placeholder="再次输入密码"></el-input>
+          <el-input show-password v-model="matchPassword" placeholder="再次输入密码"></el-input>
         </el-form-item>
         
         <el-form-item style="user-select: none;">
@@ -104,7 +104,6 @@ export default {
             userName: this.userName,
             password: this.password,
             regSex: this.regSex,
-            regAge: this.regAge,
             regEmail: this.regEmail
           })).then((response) => {
             if(response.data.message === "") {
@@ -138,9 +137,9 @@ export default {
 <style scoped>
 #register {
   background-size:cover;
-  background: black fixed;
-  height: 100%;
-  width: 100%;
+  background: url("../assets/image/67181964.png") fixed no-repeat top;
+  height: 100vh;
+  width: 100vw;
   position: fixed;
   overflow:scroll;
   z-index: -1;

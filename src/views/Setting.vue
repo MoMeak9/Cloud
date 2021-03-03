@@ -209,7 +209,7 @@ export default {
 <style scoped>
 #setting {
   background-size: cover;
-  background: black fixed;
+  background: url("../assets/image/71279418.png") fixed no-repeat top;
   height: 100%;
   width: 100%;
   position: fixed;
