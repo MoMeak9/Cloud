@@ -71,7 +71,7 @@ export default new Router({
         },
         {
             path: "/404",
-            name: "notFound",
+            name: "page404",
             component: Page404,
             meta:{
                 title: '未知页面'

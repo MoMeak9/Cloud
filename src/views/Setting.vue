@@ -250,18 +250,13 @@ export default {
 .button-border {
   width: 100%;
   background: rgba(45, 45, 45, 0.33);
-  /*   border: none; */
-  border: 1px solid #40E0D0;
-  /*   box-shadow: 0 0 25px rgba(155,89,182,.5); */
-  /*   box-shadow: 0 0 25px rgba(64,224,208,.5); */
+  border: 1px solid #40e0d0;
 }
 
 .button-border:hover {
   width: 100%;
   background: rgba(45, 45, 45, 0.33);
-  /*   border: none; */
-  border: 1px solid #40E0D0;
-  /*   box-shadow: 0 0 25px rgba(155,89,182,.5); */
+  border: 2px solid #40E0D0;
   box-shadow: 0 0 25px rgba(64, 224, 208, .5);
 }
 </style>

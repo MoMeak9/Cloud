@@ -87,16 +87,6 @@
               show-overflow-tooltip
               header-align="center"
               align="center"
-              prop="loginTime"
-              v-if="flag"
-              label="登录">
-          </el-table-column>
-
-          <el-table-column
-              sortable
-              show-overflow-tooltip
-              header-align="center"
-              align="center"
               prop="progress"
               label="空间">
 
@@ -162,16 +152,17 @@ export default {
   mounted() {
     this.baseHost = this.$store.state.baseHost;
 
-    if (this.$store.state.userName == '') {
+    if (this.$store.state.userName === '') {
       this.$message({
         message: '用户未登录！即将返回登录页面',
         type: 'error'
       });
 
-      clearTimeout(this.timer);  //清除延迟执行 
-      this.timer = setTimeout(() => {   //设置延迟执行
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
         this.$router.push({path: '/login'});
       }, 1500);
+    //  指定管理员
     } else if (this.$store.state.userName === 'admin') {
       this.getUsersInfo();
 
@@ -214,10 +205,10 @@ export default {
 //         console.log(this.users);
         for (let i = 0; i < this.users.length; i++) {
           this.users[i]['userSpace'] = response.data.userSpace[i];
-          if (this.users[i].loginTime == '') {
-            this.users[i].loginTime = '--';
+          if (this.users[i].regTime === '') {
+            this.users[i].regTime = '--';
           }
-          var userTotalSize = this.userSpaceSize = this.users[i].userName == 'admin' ? this.$store.state.adminSpaceSize : this.$store.state.userSpaceSize;
+          var userTotalSize = this.userSpaceSize = this.users[i].userName === 'admin' ? this.$store.state.adminSpaceSize : this.$store.state.userSpaceSize;
           var space = this.users[i].userSpace;
           var userSpace = '';
           if (space <= 1024) {
@@ -228,7 +219,7 @@ export default {
           this.users[i].userSpace = userSpace;
           this.users[i]['progress'] = space / (userTotalSize / (1024 * 1024)) * 100;
         }
-//         console.log(this.users);
+
       }).catch(function (error) {
         console.log(error);
       });
@@ -244,7 +235,7 @@ export default {
         this.$axios.post('http://' + this.baseHost + '/mycloud/userController/delUser', this.$qs.stringify({
           userName: name
         })).then((response) => {
-          if (response.data.message == "") {
+          if (response.data.message === "") {
             this.$message({
               message: '删除用户成功！',
               type: 'success'
@@ -266,11 +257,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-
-//         console.log(userUUID);
-        this.$store.commit('saveModUserUUID', userUUID);
+        this.$store.commit('saveUserUUID',userUUID);
         this.$router.push({path: '/setting'});
-
       }).catch(() => {
         this.test = 2;
       });
@@ -283,8 +271,8 @@ export default {
 @import '../assets/css/style.css';
 
 #admin {
-  background: black;
   background-size: cover;
+  background: url("../assets/image/70189937.png") fixed no-repeat top;
   height: 100%;
   width: 100%;
   position: fixed;
@@ -341,7 +329,6 @@ export default {
 .button-border:hover {
   width: 100%;
   background: rgba(45, 45, 45, 0.33);
-  /*   border: none; */
   border: 1px solid #40E0D0;
   box-shadow: 0 0 25px rgba(64, 224, 208, .5);
 }
