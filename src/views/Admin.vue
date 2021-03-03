@@ -155,7 +155,7 @@ export default {
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.$router.push({path: '/login'});
-      }, 150000);
+      }, 1500);
     //  指定管理员
     } else if (this.$store.state.userName === 'admin') {
       this.getUsersInfo();
@@ -290,8 +290,8 @@ export default {
   background-clip: padding-box;
   margin: 5% auto;
   background: rgba(0, 0, 0, 0.4);
-  border: 1px solid #eaeaea;
-  box-shadow: 0 0 25px rgba(155, 89, 182, .5);
+  border: 5px solid #eaeaea;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
   color: white;
   text-align: center;
   position: relative;
@@ -317,14 +317,14 @@ export default {
 
 .button-border {
   width: 100%;
-  background: rgba(45, 45, 45, 0.33);
-  border: 1px solid #40E0D0;
+  background: rgb(61, 226, 226);
+  border: 2px solid #3db8ab;
 }
 
 .button-border:hover {
   width: 100%;
-  background: rgba(45, 45, 45, 0.33);
-  border: 1px solid #40E0D0;
+  background: rgb(61, 226, 226);
+  border: 2px solid #3db8ab;
   box-shadow: 0 0 25px rgba(64, 224, 208, .5);
 }
 

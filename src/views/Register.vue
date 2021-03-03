@@ -151,8 +151,8 @@ export default {
   width: 350px;
   padding: 35px 35px 15px 35px;
   background: rgba(0, 0, 0, 0.4);
-  border: 1px solid #eaeaea;
-  box-shadow: 0 0 25px rgba(155,89,182,.5);
+  border: 5px solid #eaeaea;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
   position: relative;
   z-index: 3;
 }

@@ -81,11 +81,18 @@ export default {
 
             this.$store.commit('saveUserName', this.userName);
             this.$store.commit('saveUserUUID', response.data.userUUID);
-            //跳转主页
-            clearTimeout(this.timer);
-            this.timer = setTimeout(() => {
-              this.$router.push({path: '/cloud'});
-            }, 1500);
+            //跳转主页或者管理页
+            if (this.userName === 'admin') {
+              clearTimeout(this.timer);
+              this.timer = setTimeout(() => {
+                this.$router.push({path: '/admin'});
+              }, 1500);
+            } else {
+              clearTimeout(this.timer);
+              this.timer = setTimeout(() => {
+                this.$router.push({path: '/cloud'});
+              }, 1500);
+            }
           } else {
             this.$message({
               message: '登录失败！' + response.data.message,
@@ -136,8 +143,8 @@ export default {
   width: 350px;
   padding: 35px 35px 15px 35px;
   background: rgba(0, 0, 0, 0.4);
-  border: 1px solid #eaeaea;
-  box-shadow: 0 0 25px rgba(155, 89, 182, .5);
+  border: 5px solid #eaeaea;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
   position: relative;
   z-index: 3;
 }
@@ -164,21 +171,24 @@ export default {
   background: rgba(45, 45, 45, 0.33);
   border: 1px solid #40E0D0;
 }
+
 .button-register:hover {
   width: 100%;
   background: rgba(45, 45, 45, 0.33);
   border: 1px solid #40E0D0;
-  box-shadow: 0 0 25px rgba(64,224,208,.5);
+  box-shadow: 0 0 25px rgba(64, 224, 208, .5);
 }
+
 .button-login {
   width: 100%;
   background: rgb(61, 226, 226);
   border: 2px solid #3db8ab;
 }
+
 .button-login:hover {
   width: 100%;
   background: rgb(45, 123, 96);
   border: 2px solid #40e0d0;
-  box-shadow: 0 0 25px rgba(64,224,208,.5);
+  box-shadow: 0 0 25px rgba(64, 224, 208, .5);
 }
 </style>
