@@ -77,7 +77,7 @@ export default new Router({
                 title: '未知页面'
             }
         }, {
-            path: "*", // 此处需特别注意置于最底部
+            path: "*",
             redirect: "/404"
         }
     ]

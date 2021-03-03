@@ -8,7 +8,7 @@
         :particlesNumber="50"
         shapeType="circle"
         :particleSize="3"
-        linesColor="#E6E6FA"
+        linesColor="#aaaaaa"
         :linesWidth="1"
         :lineLinked="true"
         :lineOpacity="0.6"
@@ -22,7 +22,7 @@
       </vue-particles>
       
       <el-form class="login-container" label-position="left" label-width="0px">
-        <h3 class="login_title">新增用户</h3>
+        <h3 class="login_title">注册</h3>
         <el-form-item style="user-select: none;">
           <el-input type="text" v-model="userName" placeholder="您的用户名"></el-input>
         </el-form-item>
@@ -43,10 +43,6 @@
         </el-form-item>
         
         <el-form-item style="user-select: none;">
-          <el-input type="number" v-model="regAge" placeholder="输入年龄"></el-input>
-        </el-form-item>
-        
-        <el-form-item style="user-select: none;">
           <el-input type="email" v-model="regEmail" placeholder="输入邮箱地址"></el-input>
         </el-form-item>
 
@@ -55,7 +51,7 @@
         </el-form-item>
         
         <el-form-item style="width: 100%">
-          <el-button type="primary" class="button-border" @click="goLogin()">已经有账号？</el-button>
+          <el-button type="primary" class="button-border" @click="goLogin()">已经有账号</el-button>
         </el-form-item>
       </el-form>
       
@@ -73,7 +69,6 @@ export default {
       password: '',
       matchPassword: '',
       regSex: '',
-      regAge: '',
       regEmail: '',
       cmText: 'nothing'
     }
@@ -82,37 +77,28 @@ export default {
     this.baseHost = this.$store.state.baseHost;
   },
   methods: {
-    btnClick:function(){
-      console.log(this.cmText);
-      this.$axios.post('http://' + this.baseHost + '/postbar/myCommentController/getCommentByCmUUID', this.$qs.stringify({
-        cmUUID: '4b650f87f19346ceb52969153c286719'
-      }))
-      .then((response) => {
-        this.cmText = response.data.cmText;
-        console.log(response);
-        console.log(response.data.cmText);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-     },
     goLogin: function() {
       this.$router.push({path: '/login'});
     },
     userRegister: function() {
-      if(this.userName != '' && this.password != '' && this.matchPassword != '' && this.regSex != '' && this.regAge != '' && this.regEmail != '') {
+      if(this.userName !== '' && this.password !== '' && this.matchPassword !== '' && this.regSex !== '' && this.regAge !== '' && this.regEmail !== '') {
         var email = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
-        
-        if(this.password != this.matchPassword) {
+        var passwordLen = /^.{6,}/;
+        if(this.password !== this.matchPassword) {
            this.$message({
               message: '两次输入密码不一致！',
               type: 'error'
             });
         }else if(!email.test(this.regEmail)) {
-           this.$message({
-              message: '请输入正确的email地址',
-              type: 'error'
-            });
+          this.$message({
+            message: '请输入正确的email地址',
+            type: 'error'
+          });
+        }else if(!passwordLen.test(this.password)) {
+          this.$message({
+            message: '密码长度必须超过6位',
+            type: 'error'
+          });
         }else{
           this.$axios.post('http://' + this.baseHost + '/mycloud/userController/register', this.$qs.stringify({
             userName: this.userName,
@@ -121,14 +107,14 @@ export default {
             regAge: this.regAge,
             regEmail: this.regEmail
           })).then((response) => {
-            if(response.data.message == "") {
+            if(response.data.message === "") {
               this.$message({
                 message: '注册成功！即将跳转到登录页面！',
                 type: 'success'
               });
-              
-              clearTimeout(this.timer);  //清除延迟执行 
-              this.timer = setTimeout(()=>{   //设置延迟执行
+              //跳转
+              clearTimeout(this.timer);
+              this.timer = setTimeout(()=>{
                   this.$router.push({path: '/login'});
               },1500);
             }else{
@@ -189,17 +175,12 @@ export default {
 .button-border {
   width: 100%;
   background: rgba(45, 45, 45, 0.33);
-/*   border: none; */
   border: 1px solid #40E0D0;
-/*   box-shadow: 0 0 25px rgba(155,89,182,.5); */
-/*   box-shadow: 0 0 25px rgba(64,224,208,.5); */
 }
 .button-border:hover {
   width: 100%;
   background: rgba(45, 45, 45, 0.33);
-/*   border: none; */
   border: 1px solid #40E0D0;
-/*   box-shadow: 0 0 25px rgba(155,89,182,.5); */
   box-shadow: 0 0 25px rgba(64,224,208,.5);
 }
 </style>
