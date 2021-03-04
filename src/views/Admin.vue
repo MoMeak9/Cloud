@@ -145,7 +145,6 @@ export default {
   },
   mounted() {
     this.baseHost = this.$store.state.baseHost;
-
     if (this.$store.state.userName === '') {
       this.$message({
         message: '用户未登录！即将返回登录页面',

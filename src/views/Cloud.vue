@@ -100,10 +100,8 @@
               <i class="el-icon-s-tools el-icon--left"></i>操作<i class="el-icon-caret-bottom el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-<!--               <el-dropdown-item icon="el-icon-plus">上传文件</el-dropdown-item> -->
               <el-dropdown-item icon="el-icon-upload2"  @click.native="uploadFilesVisible=true">上传文件</el-dropdown-item>
               <el-dropdown-item icon="el-icon-link"  @click.native="getHttpFile()">上传链接</el-dropdown-item>
-<!--               <el-dropdown-item icon="el-icon-download" @click.native="fileDownLoad()">下载文件</el-dropdown-item> -->
               <el-dropdown-item icon="el-icon-folder-add" @click.native="inputFolderName(nowFolder.path, nowFolder.depth + 1)">新建文件夹</el-dropdown-item>
               <el-dropdown-item icon="el-icon-scissors"  @click.native="moveFiles()">{{moveFilesFlag?'粘贴（'+moveFilesArray.length+'）':'剪切'}}</el-dropdown-item>
               <el-dropdown-item icon="el-icon-delete" @click.native="deleteFiles()">删除</el-dropdown-item>
@@ -312,7 +310,7 @@ export default {
   data() {
     return {
       baseHost: '',
-      userSpaceSize: 1 * 1024 * 1024 *1024,
+      userSpaceSize: 1024 * 1024 *1024,
       userName: '',
       flag: true,
       width: 3,
@@ -343,8 +341,8 @@ export default {
           url: ''
         }
       },
-      videoWidth: document.documentElement.clientWidth,     // 屏幕宽
-      videoHeight: document.documentElement.clientHeight,  // 屏幕高
+      videoWidth: document.documentElement.clientWidth,
+      videoHeight: document.documentElement.clientHeight,
       videoArray: [],
       nowVideo: {},
       nowVideoIndex: 0,
@@ -374,8 +372,6 @@ export default {
     }
   },
   mounted() {
-    
-    
     window.addEventListener("resize", () => {
       this.videoWidth = document.documentElement.clientWidth;
       this.videoHeight = document.documentElement.clientHeight;
@@ -390,24 +386,19 @@ export default {
     
     this.userName = this.$store.state.userName;
     
-    if(this.userName == '') {
+    if(this.userName === '') {
       this.$message({
         message: '用户未登录！即将返回登录页面',
         type: 'error'
       });
-
-      clearTimeout(this.timer);  //清除延迟执行
-      this.timer = setTimeout(()=>{   //设置延迟执行
+      clearTimeout(this.timer);
+      this.timer = setTimeout(()=>{
           this.$router.push({path: '/login'});
       },1500);
     }else{
       this.baseHost = this.$store.state.baseHost;
-      this.userSpaceSize = this.userName == 'admin' ? this.$store.state.adminSpaceSize : this.$store.state.userSpaceSize;
-
-//       console.log(this.userSpaceSize);
-
+      this.userSpaceSize = this.userName === 'admin' ? this.$store.state.adminSpaceSize : this.$store.state.userSpaceSize;
       this.uploadUrl = 'http://' + this.baseHost + '/mycloud/pathsController/uploads';
-      
       this.filesListInit();
     }
     
@@ -1572,7 +1563,6 @@ export default {
         var videoUrl = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.nowVideo.path);
         videoUrl = videoUrl.replace(/%3A/g, ':');
         videoUrl = videoUrl.replace(/%2F/g, '/');
-//        var videoUrl = encodeURI('http://' + this.baseHost + '/cloud/pathsController/download?pathsUUID=' + this.nowVideo.pathsUUID);
         this.$refs.dplayer.dp.switchVideo({url:videoUrl});
 
         this.$refs.dplayer.dp.pause();
@@ -1850,9 +1840,9 @@ export default {
             fileUrl: value
           })).then((response) => {
   //           console.log(response.data);
-            if(response.data.message == '') {
+            if(response.data.message === '') {
               
-              if(this.nowFolder_backup.pathsUUID == this.nowFolder.pathsUUID) {
+              if(this.nowFolder_backup.pathsUUID === this.nowFolder.pathsUUID) {
                 this.saveFiles = response.data.pathsDtosList;
                 this.files = this.saveFiles;
               }
