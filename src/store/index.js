@@ -10,21 +10,14 @@ export default new Vuex.Store({
         adminSpaceSize: 2 * 1024 * 1024 *1024, //2GB
         userUUID: "",
         userName: "",
-        modUserUUID: "",
     },
     mutations:{
-      
         saveUserUUID(state, userUUID) {
             state.userUUID = userUUID;
         },
       
         saveUserName(state, userName) {
             state.userName = userName;
-        },
-      
-        saveModUserUUID(state, modUserUUID) {
-            state.modUserUUID = modUserUUID;
         }
-      
     }
 })
