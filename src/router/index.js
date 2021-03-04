@@ -70,7 +70,7 @@ export default new Router({
             }
         },
         {
-            path: "/404",
+            path: "/page404",
             name: "page404",
             component: Page404,
             meta:{
@@ -78,7 +78,7 @@ export default new Router({
             }
         }, {
             path: "*",
-            redirect: "/404"
+            redirect: "/page404"
         }
     ]
 })

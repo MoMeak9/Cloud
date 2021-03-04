@@ -24,8 +24,11 @@ router.beforeEach((to, from, next) => {
   }else if(to.path === '/check') {
     document.title = to.meta.title
     next()
+  }else if(to.path === '/page404') {
+    document.title = to.meta.title
+    next()
   }else {
-    document.title = '404 error'
+    next({path: '/page404'})
   }
 })
 

@@ -266,8 +266,8 @@ export default {
 @import '../assets/css/style.css';
 
 #admin {
-  background-size: cover;
   background: url("../assets/image/70189937.png") fixed no-repeat top;
+  background-size: cover;
   height: 100%;
   width: 100%;
   position: fixed;
