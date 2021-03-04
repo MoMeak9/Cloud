@@ -44,48 +44,12 @@
 
           <el-table-column
               sortable
-              header-align="center"
-              align="center"
-              prop="regSex"
-              label="性别"
-              :width="flag ? '100' : '75'">
-          </el-table-column>
-
-          <el-table-column
-              sortable
               show-overflow-tooltip
               header-align="center"
               align="center"
-              prop="regEmail"
-              label="邮箱"
-              v-if="flag">
-          </el-table-column>
-
-          <el-table-column
-              sortable
-              show-overflow-tooltip
-              header-align="center"
-              align="center"
-              prop="regTime"
-              v-if="flag"
-              label="注册时间">
-          </el-table-column>
-
-          <el-table-column
-              sortable
-              show-overflow-tooltip
-              header-align="center"
-              align="center"
-              prop="progress"
-              label="空间">
-
-            <template slot-scope="scope">
-              <el-tooltip :content=scope.row.userSpace placement="left" effect="light">
-                <el-progress :text-inside="true" :stroke-width="15" :percentage="Math.round(scope.row.progress)"
-                             style="line-height: 33px;"></el-progress>
-              </el-tooltip>
-            </template>
-
+              prop="fileName"
+              label="文件"
+              :width="flag ? '130' : '75'">
           </el-table-column>
 
           <el-table-column
@@ -99,10 +63,11 @@
               <el-container v-else>
                 <el-main :style="flag ? 'text-align:center;' : 'text-align:center;padding:0px;'">
                   <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"
-                           @click="modUser(scope.row.userName, scope.row.userUUID)"><i class="el-icon-edit-outline"></i>
-                    修改
+                           @click="allowFile(scope.row.fileName, scope.row.pathsUUID)"><i
+                      class="el-icon-edit-outline"></i>
+                    通过
                   </el-link>
-                  <el-link type="primary" @click="deleteUser(scope.row.userName)"><i class="el-icon-circle-close"></i>
+                  <el-link type="primary" @click="deleteFile(scope.row.pathsUUID,scope.row.fileName)"><i class="el-icon-circle-close"></i>
                     删除
                   </el-link>
                 </el-main>
@@ -116,9 +81,6 @@
       </el-main>
       <el-footer>
         <el-form class="login-container" label-position="left" label-width="0px">
-          <el-form-item style="width: 100%">
-            <el-button type="primary" class="button-border" @click="goCheck()">文件审核</el-button>
-          </el-form-item>
           <el-form-item style="width: 100%">
             <el-button type="primary" class="button-border" @click="goYun()">返回</el-button>
           </el-form-item>
@@ -149,7 +111,7 @@ export default {
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.$router.push({path: '/login'});
-      }, 1500);
+      }, 150000);
       //  指定管理员
     } else if (this.$store.state.userName === 'admin') {
       this.getUsersFile();
@@ -174,33 +136,64 @@ export default {
       return flag;
     },
     getUsersFile: function () {
-      this.$axios.post('http://' + this.baseHost + '/mycloud/userController/getUsers', this.$qs.stringify({})).then((response) => {
+      this.$axios.post('http://' + this.baseHost + '/mycloud/userController/getFile', this.$qs.stringify({})).then((response) => {
         this.users = response.data.usersList;
         for (let i = 0; i < this.users.length; i++) {
           this.users[i]['userSpace'] = response.data.userSpace[i];
           if (this.users[i].regTime === '') {
             this.users[i].regTime = '--';
           }
-          var userTotalSize = this.userSpaceSize = this.users[i].userName === 'admin' ? this.$store.state.adminSpaceSize : this.$store.state.userSpaceSize;
-          var space = this.users[i].userSpace;
-          var userSpace = '';
-          if (space <= 1024) {
-            userSpace = '空间大小：' + parseFloat(space).toFixed(2) + 'MB / ' + (userTotalSize / (1024 * 1024 * 1024)) + 'GB';
-          } else {
-            userSpace = '空间大小：' + parseFloat(space / 1024).toFixed(2) + 'GB / ' + (userTotalSize / (1024 * 1024 * 1024)) + 'GB';
-          }
-          this.users[i].userSpace = userSpace;
-          this.users[i]['progress'] = space / (userTotalSize / (1024 * 1024)) * 100;
         }
 
       }).catch(function (error) {
         console.log(error);
       });
     },
+    allowFile: function (fileName, pathsUUID) {
+      this.$confirm('提示： [' + name + ']？', '修改用户', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$store.commit('allowFile',pathsUUID);
+        this.$router.push({path: '/setting'});
+      }).catch(() => {
+        this.test = 2;
+      });
+    },
+    deleteFile:function (pathsUUID,fileName){
+      this.$confirm('提示：确定删除文件 [' + fileName + ']？', '删除用户', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+
+        this.$axios.post('http://' + this.baseHost + '/mycloud/userController/delUser', this.$qs.stringify({
+          pathsUUID: pathsUUID,
+          fileName: fileName
+        })).then((response) => {
+          if (response.data.message === "") {
+            this.$message({
+              message: '删除用户成功！',
+              type: 'success'
+            });
+
+            this.users = response.data.usersList;
+          }
+        }).catch(function (error) {
+          console.log(error);
+        });
+
+      }).catch(() => {
+        this.test = 2;
+      });
+    }
   }
 }
 </script>
 <style scoped>
+@import '../assets/css/style.css';
+
 #check {
   background: url("../assets/image/71279418.png") fixed no-repeat top;
   background-size: cover;
@@ -209,5 +202,65 @@ export default {
   position: fixed;
   overflow: scroll;
   z-index: -1;
+}
+
+#particles-js {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+  z-index: 1;
+}
+
+.user-container {
+  border-radius: 15px;
+  background-clip: padding-box;
+  margin: 5% auto;
+  background: rgba(0, 0, 0, 0.4);
+  border: 5px solid #eaeaea;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  position: relative;
+  z-index: 3;
+}
+
+.user-title {
+  font-size: 1.75rem;
+  color: #f3f9f1;
+  border-bottom: 1px solid #EBEEF5;
+  user-select: none;
+}
+
+.user-row {
+  border-bottom: 1px solid #EBEEF5;
+}
+
+.user-table {
+  color: black;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.button-border {
+  width: 100%;
+  background: rgb(61, 226, 226);
+  border: 2px solid #3db8ab;
+}
+
+.button-border:hover {
+  width: 100%;
+  background: rgb(61, 226, 226);
+  border: 2px solid #3db8ab;
+  box-shadow: 0 0 25px rgba(64, 224, 208, .5);
+}
+
+.login-container {
+  margin: 0 auto;
+  width: 50%;
+  position: relative;
+  z-index: 3;
 }
 </style>

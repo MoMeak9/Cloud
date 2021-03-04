@@ -38,7 +38,6 @@ export default {
       this.timer = setTimeout(() => {
         this.$router.push({path: '/login'});
       }, 1500);
-      //  指定管理员
     } else {
       this.$message({
         message: '即将返回主页',
