@@ -25,6 +25,31 @@
 export default {
   name: "page404",
   data() {
+  },
+  mounted() {
+    this.baseHost = this.$store.state.baseHost;
+    if (this.$store.state.userName === '') {
+      this.$message({
+        message: '用户未登录！即将返回登录页面',
+        type: 'error'
+      });
+
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => {
+        this.$router.push({path: '/login'});
+      }, 1500);
+      //  指定管理员
+    } else {
+      this.$message({
+        message: '即将返回主页',
+        type: 'error'
+      });
+
+      clearTimeout(this.timer);  //清除延迟执行
+      this.timer = setTimeout(() => {   //设置延迟执行
+        this.$router.push({path: '/cloud'});
+      }, 1500);
+    }
   }
 }
 </script>
