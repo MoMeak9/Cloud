@@ -19,18 +19,19 @@
     >
     </vue-particles>
 
-    <el-container class="user-container"
+    <el-container class="file-container"
                   :style="flag?'width: 90%;padding: 35px 35px 15px 35px;':'width:350px;padding: 20px 14px 20px 14px;'">
-      <el-header class="user-title">
+      <el-header class="file-title">
         文件审核
       </el-header>
       <el-main style="padding-left: 0;padding-right: 0;">
 
         <el-table
-            class="user-table"
+            class="file-table"
             :header-cell-style="{color: '#000000'}"
             :default-sort="{prop: 'userName', order: 'ascending'}"
             :data="files">
+
 
           <el-table-column
               sortable
@@ -38,8 +39,7 @@
               header-align="center"
               align="center"
               prop="userName"
-              label="用户"
-              :width="flag ? '160' : '75'">
+              label="用户">
           </el-table-column>
 
           <el-table-column
@@ -48,8 +48,7 @@
               header-align="center"
               align="center"
               prop="fileTime"
-              label="上传时间"
-              :width="flag ? '160' : '75'">
+              label="上传时间">
           </el-table-column>
 
           <el-table-column
@@ -58,15 +57,15 @@
               header-align="center"
               align="center"
               prop="fileName"
-              label="文件"
-              :width="flag ? '160' : '75'">
+              label="文件">
           </el-table-column>
 
           <el-table-column
               header-align="center"
               align="center"
               label="操作"
-              :width="flag ? '200' : '90'">
+              :width="flag ? '130' : '90'">
+
 
             <template slot-scope="scope">
               <span v-if="scope.row.userName === 'admin'">--</span>
@@ -147,35 +146,31 @@ export default {
       return flag;
     },
     getUsersFile: function () {
-      this.$axios.post('http://' + this.baseHost + '/mycloud/checkController/getFile', this.$qs.stringify({})).then((response) => {
+      this.$axios.post('http://' + this.baseHost + '/mycloud/checkController/getFiles', this.$qs.stringify({})).then((response) => {
         this.files = response.data.filesList;
-        for (let i = 0; i < this.users.length; i++) {
-          this.users[i]['userSpace'] = response.data.userSpace[i];
-          if (this.users[i].regTime === '') {
-            this.users[i].regTime = '--';
-          }
-        }
-
       }).catch(function (error) {
         console.log(error);
       });
     },
 
-    allowFile: function (fileName, pathsUUID) {
-      this.$confirm('提示： [' + name + ']？', '修改用户', {
-        confirmButtonText: '确定',
+    allowFile: function (pathsUUID, fileName) {
+      this.$confirm('提示： 通过[' + fileName + ']的审核？', '审核', {
+        confirmButtonText: '通过',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$store.commit('allowFile', pathsUUID);
-        this.$router.push({path: '/setting'});
-      }).catch(() => {
-        this.test = 2;
+        this.$axios.post('http://' + this.baseHost + '/mycloud/checkController/allowFile', this.$qs.stringify({
+          pathsUUID: this.pathsUUID,
+        })).then((response) => {
+          this.files = response.data.filesList;
+        })
+      }).catch(function (error) {
+        console.log(error);
       });
     },
 
-    deleteFile: function (pathsUUID, filename) {
-      this.$confirm('此操作将永久删除' + ' [' + filename.replace('/', '') + '], 是否继续?', '删除', {
+    deleteFile: function (pathsUUID, fileName) {
+      this.$confirm('此操作将永久删除' + ' [' + fileName.replace('/', '') + '], 是否继续?', '删除', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -183,7 +178,7 @@ export default {
         this.$axios.post('http://' + this.baseHost + '/mycloud/checkController/delFile', this.$qs.stringify({
           PathsUUID: this.pathsUUID,
         })).then((response) => {
-          if(response.data.message === ""){
+          if (response.data.message === "") {
             this.$message({
               message: '删除文件成功！',
               type: 'success'
@@ -203,7 +198,7 @@ export default {
     goYun: function () {
       this.$router.push({path: '/cloud'});
     },
-    }
+  }
 }
 </script>
 <style scoped>
@@ -229,7 +224,7 @@ export default {
   z-index: 1;
 }
 
-.user-container {
+.file-container {
   border-radius: 15px;
   background-clip: padding-box;
   margin: 5% auto;
@@ -242,18 +237,18 @@ export default {
   z-index: 3;
 }
 
-.user-title {
+.file-title {
   font-size: 1.75rem;
   color: #f3f9f1;
   border-bottom: 1px solid #EBEEF5;
   user-select: none;
 }
 
-.user-row {
+.file-row {
   border-bottom: 1px solid #EBEEF5;
 }
 
-.user-table {
+.file-table {
   color: black;
   width: 100%;
   border-radius: 4px;

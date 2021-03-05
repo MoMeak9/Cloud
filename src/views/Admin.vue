@@ -155,7 +155,7 @@ export default {
       this.timer = setTimeout(() => {
         this.$router.push({path: '/login'});
       }, 1500);
-    //  指定管理员
+      //  指定管理员
     } else if (this.$store.state.userName === 'admin') {
       this.getUsersInfo();
 
@@ -222,7 +222,6 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-
         this.$axios.post('http://' + this.baseHost + '/mycloud/userController/delUser', this.$qs.stringify({
           userUUID: userUUID
         })).then((response) => {
@@ -247,14 +246,14 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$store.commit('saveUserUUID',userUUID);
+        this.$store.commit('saveUserUUID', userUUID);
         this.$router.push({path: '/setting'});
       }).catch(() => {
         this.test = 2;
       });
     },
-    goCheck:function (){
-      this.$router.push({path:'/check'})
+    goCheck: function () {
+      this.$router.push({path: '/check'})
     }
   }
 }
