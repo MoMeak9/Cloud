@@ -56,7 +56,7 @@
               show-overflow-tooltip
               header-align="center"
               align="center"
-              prop="fileName"
+              prop="filename"
               label="文件">
           </el-table-column>
 
@@ -64,24 +64,38 @@
               header-align="center"
               align="center"
               label="操作"
-              :width="flag ? '130' : '90'">
+              :width="flag ? '200' : '90'">
 
 
             <template slot-scope="scope">
               <span v-if="scope.row.userName === 'admin'">--</span>
-              <el-container v-else>
+
+              <el-container v-else-if="judgeFileType(scope.row.filename) === 1">
                 <el-main :style="flag ? 'text-align:center;' : 'text-align:center;padding:0px;'">
                   <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"
-                           @click="allowFile(scope.row.fileName, scope.row.pathsUUID)"><i
+                           @click="allowFile(scope.row.filename, scope.row.pathsUUID)"><i
                       class="el-icon-edit-outline"></i>
                     通过
                   </el-link>
-                  <el-link type="primary" @click="deleteFile(scope.row.pathsUUID,scope.row.fileName)"><i
+                  <el-link type="primary" @click="deleteFile(scope.row.pathsUUID,scope.row.filename)"><i
                       class="el-icon-circle-close"></i>
                     删除
                   </el-link>
                 </el-main>
               </el-container>
+
+              <el-container v-else-if="judgeFileType(scope.row.filename) === 2">
+                <el-main :style="flag ? 'text-align:center;' : 'text-align:center;padding:0px;'">
+                  <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"
+                           @click="playMusic(scope.row.pathsUUID)"><i class="el-icon-video-play"></i> 播放
+                  </el-link>
+                  <el-link type="primary" @click="deleteFile(scope.row.pathsUUID,scope.row.filename)"><i
+                      class="el-icon-circle-close"></i>
+                    删除
+                  </el-link>
+                </el-main>
+              </el-container>
+
             </template>
 
           </el-table-column>
@@ -153,8 +167,8 @@ export default {
       });
     },
 
-    allowFile: function (pathsUUID, fileName) {
-      this.$confirm('提示： 通过[' + fileName + ']的审核？', '审核', {
+    allowFile: function (pathsUUID, filename) {
+      this.$confirm('提示： 通过[' + filename + ']的审核？', '审核', {
         confirmButtonText: '通过',
         cancelButtonText: '取消',
         type: 'warning'
@@ -169,8 +183,8 @@ export default {
       });
     },
 
-    deleteFile: function (pathsUUID, fileName) {
-      this.$confirm('此操作将永久删除' + ' [' + fileName.replace('/', '') + '], 是否继续?', '删除', {
+    deleteFile: function (pathsUUID, filename) {
+      this.$confirm('此操作将永久删除' + ' [' + filename.replace('/', '') + '], 是否继续?', '删除', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -198,6 +212,55 @@ export default {
     goYun: function () {
       this.$router.push({path: '/cloud'});
     },
+
+    judgeFileType: function (filename) {
+      if (filename.indexOf('/') !== -1) {
+        return 1;
+      } else if (filename.toLowerCase().indexOf('.mp3') !== -1) {
+        return 2;
+      } else if (filename.toLowerCase().toLowerCase().indexOf('.wav') !== -1) {
+        return 2;
+      } else if (filename.toLowerCase().indexOf('.flac') !== -1) {
+        return 2;
+      } else if (filename.toLowerCase().indexOf('.mp4') !== -1) {
+        return 3;
+      } else if (filename.toLowerCase().indexOf('.webm') !== -1) {
+        return 3;
+      } else if (filename.toLowerCase().indexOf('.mkv') !== -1) {
+        return 3;
+      } else if (filename.toLowerCase().indexOf('.jpg') !== -1) {
+        return 4;
+      } else if (filename.toLowerCase().indexOf('.png') !== -1) {
+        return 4;
+      } else if (filename.toLowerCase().indexOf('.jpeg') !== -1) {
+        return 4;
+      }
+
+      var text = [
+        '.c',
+        '.cpp',
+        '.css',
+        '.html',
+        '.java',
+        '.js',
+        '.json',
+        '.jsp',
+        '.md',
+        '.txt',
+        '.py',
+        '.pyc',
+        '.sh',
+        '.sql'
+      ]
+
+      for (let i = 0; i < text.length; i++) {
+        if (filename.toLowerCase().indexOf(text[i]) !== -1) {
+          return 5;
+        }
+      }
+      return 6
+    },
+  //  加入预览
   }
 }
 </script>

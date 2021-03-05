@@ -183,11 +183,6 @@ export default {
       this.$store.commit('saveUserName', this.userName);
       this.$router.push({path: '/cloud'});
     },
-    userClass: function ({row, columnIndex}) {
-      if (columnIndex === 1 && row.operate === '删除') {
-        return 'blue-cell';
-      }
-    },
     goYun: function () {
       this.$router.push({path: '/cloud'});
     },
