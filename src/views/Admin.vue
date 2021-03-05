@@ -215,7 +215,7 @@ export default {
         console.log(error);
       });
     },
-    deleteUser: function (name) {
+    deleteUser: function (userUUID) {
 
       this.$confirm('提示：确定删除用户 [' + name + ']？', '删除用户', {
         confirmButtonText: '确定',
@@ -224,14 +224,13 @@ export default {
       }).then(() => {
 
         this.$axios.post('http://' + this.baseHost + '/mycloud/userController/delUser', this.$qs.stringify({
-          userName: name
+          userUUID: userUUID
         })).then((response) => {
           if (response.data.message === "") {
             this.$message({
               message: '删除用户成功！',
               type: 'success'
             });
-
             this.users = response.data.usersList;
           }
         }).catch(function (error) {

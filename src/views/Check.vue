@@ -22,7 +22,7 @@
     <el-container class="user-container"
                   :style="flag?'width: 90%;padding: 35px 35px 15px 35px;':'width:350px;padding: 20px 14px 20px 14px;'">
       <el-header class="user-title">
-        管理用户
+        文件审核
       </el-header>
       <el-main style="padding-left: 0;padding-right: 0;">
 
@@ -30,7 +30,7 @@
             class="user-table"
             :header-cell-style="{color: '#000000'}"
             :default-sort="{prop: 'userName', order: 'ascending'}"
-            :data="users">
+            :data="files">
 
           <el-table-column
               sortable
@@ -39,7 +39,17 @@
               align="center"
               prop="userName"
               label="用户"
-              :width="flag ? '130' : '75'">
+              :width="flag ? '160' : '75'">
+          </el-table-column>
+
+          <el-table-column
+              sortable
+              show-overflow-tooltip
+              header-align="center"
+              align="center"
+              prop="fileTime"
+              label="上传时间"
+              :width="flag ? '160' : '75'">
           </el-table-column>
 
           <el-table-column
@@ -49,7 +59,7 @@
               align="center"
               prop="fileName"
               label="文件"
-              :width="flag ? '130' : '75'">
+              :width="flag ? '160' : '75'">
           </el-table-column>
 
           <el-table-column
@@ -67,7 +77,8 @@
                       class="el-icon-edit-outline"></i>
                     通过
                   </el-link>
-                  <el-link type="primary" @click="deleteFile(scope.row.pathsUUID,scope.row.fileName)"><i class="el-icon-circle-close"></i>
+                  <el-link type="primary" @click="deleteFile(scope.row.pathsUUID,scope.row.fileName)"><i
+                      class="el-icon-circle-close"></i>
                     删除
                   </el-link>
                 </el-main>
@@ -97,7 +108,7 @@ export default {
     return {
       flag: true,
       baseHost: '',
-      users: []
+      files: [],
     }
   },
   mounted() {
@@ -149,46 +160,46 @@ export default {
         console.log(error);
       });
     },
+
     allowFile: function (fileName, pathsUUID) {
       this.$confirm('提示： [' + name + ']？', '修改用户', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$store.commit('allowFile',pathsUUID);
+        this.$store.commit('allowFile', pathsUUID);
         this.$router.push({path: '/setting'});
       }).catch(() => {
         this.test = 2;
       });
     },
-    deleteFile:function (pathsUUID,fileName){
-      this.$confirm('提示：确定删除文件 [' + fileName + ']？', '删除用户', {
+
+    deleteFile: function (pathsUUID, filename) {
+      this.$confirm('此操作将永久删除' + ' [' + filename.replace('/', '') + '], 是否继续?', '删除', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-
-        this.$axios.post('http://' + this.baseHost + '/mycloud/userController/delUser', this.$qs.stringify({
-          pathsUUID: pathsUUID,
-          fileName: fileName
+        this.$axios.post('http://' + this.baseHost + '/mycloud/checkController/delFile', this.$qs.stringify({
+          PathsUUID: this.pathsUUID,
         })).then((response) => {
-          if (response.data.message === "") {
+          if(response.data.message === ""){
             this.$message({
-              message: '删除用户成功！',
+              message: '删除文件成功！',
               type: 'success'
             });
-
-            this.users = response.data.usersList;
+            this.files = response.data.fileList;
           }
-        }).catch(function (error) {
+        }).catch((error) => {
           console.log(error);
+          this.$message({
+            type: 'error',
+            message: '删除失败！服务器内部错误！'
+          });
         });
-
-      }).catch(() => {
-        this.test = 2;
       });
+    },
     }
-  }
 }
 </script>
 <style scoped>

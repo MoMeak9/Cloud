@@ -795,34 +795,20 @@ export default {
             message: '取消编辑'
           });       
         });
-
       }
-      
     },
     deleteFile: function(filename, pathsUUID) {
-      var moveFilesFlag = false;
-      for(let i = 0; i < this.moveFilesArray.length; i++) {
-        if(pathsUUID == this.moveFilesArray[i].pathsUUID) {
-          moveFilesFlag = true;
-          break;
-        }
-      }
-      
-      if(!moveFilesFlag) {
-        
-        var tips = filename.indexOf("/") == -1 ? '文件' : '文件夹';
+        var tips = filename.indexOf("/") === -1 ? '文件' : '文件夹';
         this.$confirm('此操作将永久删除' + tips + ' [' + filename.replace('/', '') + '], 是否继续?', '删除' + tips, {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-
           this.$axios.post('http://' + this.baseHost + '/mycloud/pathsController/delFile', this.$qs.stringify({
             userUUID: this.$store.state.userUUID,
             lastPathsUUID: this.nowFolder.pathsUUID,
             pathsUUID: pathsUUID
           })).then((response) => {
-  //           console.log(response.data);
             this.saveFiles = response.data.pathsDtosList;
             this.files = this.saveFiles;
             this.totalSizes = response.data.totalSizes;
@@ -845,35 +831,10 @@ export default {
             message: '已取消删除'
           });          
         });
-
-      }else{
-        this.$confirm('提示：删除文件失败！删除的文件是剪切板中要移动的文件！请先清空剪切板后再来执行本操作！', '删除文件', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'error'
-        }).then(() => {
-          this.test = 1;
-        }).catch(() => {
-          this.test = 2;
-        });
-      }
-      
-      
     },
     deleteFiles: function() {
-      var moveFilesFlag = false;
-      for(let i = 0; i < this.filesSelection.length; i++) {
-        for(let j = 0; j < this.moveFilesArray.length; j++) {
-          if(this.filesSelection[i].pathsUUID == this.moveFilesArray[j].pathsUUID) {
-            moveFilesFlag = true;
-            break;
-          }
-        }
-      }
-      
-      if(!moveFilesFlag) {
-        
-        if(this.filesSelection.length != 0) {
+
+        if(this.filesSelection.length !== 0) {
           this.$confirm('提示：确定要彻底删除这' + this.filesSelection.length + '项么？该操作不可恢复！', '删除文件', {
             confirmButtonText: '全部删除',
             cancelButtonText: '取消',
@@ -885,7 +846,6 @@ export default {
               lastPathsUUID: this.nowFolder.pathsUUID,
               filesJsonArray: JSON.stringify(this.filesSelection)
             })).then((response) => {
-  //             console.log(response.data);
               this.saveFiles = response.data.pathsDtosList;
               this.files = this.saveFiles;
               this.totalSizes = response.data.totalSizes;
@@ -919,20 +879,9 @@ export default {
             this.test = 2;
           });
         }
-            
-      }else{
-        this.$confirm('提示：删除文件失败！删除的文件中包含剪切板中要移动的文件！请先清空剪切板后再来执行本操作！', '删除文件', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'error'
-        }).then(() => {
-          this.test = 1;
-        }).catch(() => {
-          this.test = 2;
-        });
       }
-      
     },
+
     moveFiles: function() {
       
       if(this.moveFilesFlag){
@@ -946,7 +895,7 @@ export default {
           
           for(let i = 0; i < this.moveFilesArray.length; i++) {
             
-            if(this.moveFilesArray[i].filename.indexOf('/') != -1) {
+            if(this.moveFilesArray[i].filename.indexOf('/') !== -1) {
               if(this.nowFolder.path.length >= this.moveFilesArray[i].path.length) {
                 if(this.nowFolder.path.indexOf(this.moveFilesArray[i].path) != -1) {
                   flag = true;
@@ -1509,8 +1458,6 @@ export default {
       videoUrl = videoUrl.replace(/%3A/g, ':');
       videoUrl = videoUrl.replace(/%2F/g, '/');
       
-//       console.log(videoUrl);
-//       var videoUrl = encodeURI('http://' + this.baseHost + '/cloud/pathsController/download?pathsUUID=' + this.nowVideo.pathsUUID);
       this.$refs.dplayer.dp.switchVideo({url:videoUrl});
       
       this.videoFlag = true;
@@ -1658,9 +1605,9 @@ export default {
       
       var flag = false;
       for(let i = 0; i < this.saveFiles.length; i++) {
-        if(this.saveFiles[i].pathsUUID == pathsUUID){
+        if(this.saveFiles[i].pathsUUID === pathsUUID){
           for(let j = 0; j < text.length; j++) {
-            if(this.saveFiles[i].filename.toLowerCase().indexOf(text[j]) != -1) {
+            if(this.saveFiles[i].filename.toLowerCase().indexOf(text[j]) !== -1) {
 
               this.$axios.post('http://' + this.baseHost + '/cloud/pathsController/getText', this.$qs.stringify({
                 userUUID: this.$store.state.userUUID,
@@ -1839,7 +1786,6 @@ export default {
             pathsUUID: this.nowFolder.pathsUUID,
             fileUrl: value
           })).then((response) => {
-  //           console.log(response.data);
             if(response.data.message === '') {
               
               if(this.nowFolder_backup.pathsUUID === this.nowFolder.pathsUUID) {
@@ -1879,7 +1825,6 @@ export default {
       });
     }
   }
-}
 </script>
 
 <style scoped>
