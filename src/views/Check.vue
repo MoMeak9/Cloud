@@ -147,8 +147,8 @@ export default {
       return flag;
     },
     getUsersFile: function () {
-      this.$axios.post('http://' + this.baseHost + '/mycloud/userController/getFile', this.$qs.stringify({})).then((response) => {
-        this.users = response.data.usersList;
+      this.$axios.post('http://' + this.baseHost + '/mycloud/checkController/getFile', this.$qs.stringify({})).then((response) => {
+        this.files = response.data.filesList;
         for (let i = 0; i < this.users.length; i++) {
           this.users[i]['userSpace'] = response.data.userSpace[i];
           if (this.users[i].regTime === '') {
@@ -188,7 +188,7 @@ export default {
               message: '删除文件成功！',
               type: 'success'
             });
-            this.files = response.data.fileList;
+            this.files = response.data.filesList;
           }
         }).catch((error) => {
           console.log(error);
@@ -198,6 +198,10 @@ export default {
           });
         });
       });
+    },
+
+    goYun: function () {
+      this.$router.push({path: '/cloud'});
     },
     }
 }
