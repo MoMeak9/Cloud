@@ -73,12 +73,15 @@
               <el-container v-else-if="judgeFileType(scope.row.filename) === 1">
                 <el-main :style="flag ? 'text-align:center;' : 'text-align:center;padding:0px;'">
                   <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"
+                           @click="showImages(scope.row.pathsUUID)"><i class="el-icon-picture"></i> 查看
+                  </el-link>
+                  <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"
                            @click="allowFile(scope.row.filename, scope.row.pathsUUID)"><i
                       class="el-icon-edit-outline"></i>
                     通过
                   </el-link>
                   <el-link type="primary" @click="deleteFile(scope.row.pathsUUID,scope.row.filename)"><i
-                      class="el-icon-circle-close"></i>
+                      class="el-icon-document-delete"></i>
                     删除
                   </el-link>
                 </el-main>
@@ -87,15 +90,32 @@
               <el-container v-else-if="judgeFileType(scope.row.filename) === 2">
                 <el-main :style="flag ? 'text-align:center;' : 'text-align:center;padding:0px;'">
                   <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"
-                           @click="playMusic(scope.row.pathsUUID)"><i class="el-icon-video-play"></i> 播放
+                           @click="playVideo(scope.row.pathsUUID)"><i class="el-icon-picture"></i> 查看
+                  </el-link>
+                  <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"
+                           @click="allowFile(scope.row.filename, scope.row.pathsUUID)"><i
+                      class="el-icon-edit-outline"></i>
+                    通过
                   </el-link>
                   <el-link type="primary" @click="deleteFile(scope.row.pathsUUID,scope.row.filename)"><i
-                      class="el-icon-circle-close"></i>
+                      class="el-icon-document-delete"></i>
                     删除
                   </el-link>
                 </el-main>
               </el-container>
 
+              <el-container v-else>
+                <el-main :style="flag ? 'text-align:center;' : 'text-align:center;padding:0px;'">
+                  <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"
+                           @click="allowFile(scope.row.filename, scope.row.pathsUUID)"><i
+                      class="el-icon-edit-outline"></i>
+                    通过
+                  </el-link>
+                  <el-link type="primary" @click="deleteFile(scope.row.filename, scope.row.pathsUUID)"><i
+                      class="el-icon-document-delete"></i> 删除
+                  </el-link>
+                </el-main>
+              </el-container>
             </template>
 
           </el-table-column>
