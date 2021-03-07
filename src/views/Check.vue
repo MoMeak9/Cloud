@@ -90,11 +90,11 @@
               <el-container v-else-if="judgeFileType(scope.row.filename) === 2">
                 <el-main :style="flag ? 'text-align:center;' : 'text-align:center;padding:0px;'">
                   <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"
-                           @click="playVideo(scope.row.pathsUUID)"><i class="el-icon-picture"></i> 查看
+                           @click="playVideo(scope.row.pathsUUID)"><i class="el-icon-video-play"></i> 播放
                   </el-link>
                   <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"
                            @click="allowFile(scope.row.filename, scope.row.pathsUUID)"><i
-                      class="el-icon-edit-outline"></i>
+                      class="el-icon-check"></i>
                     通过
                   </el-link>
                   <el-link type="primary" @click="deleteFile(scope.row.pathsUUID,scope.row.filename)"><i
@@ -108,7 +108,7 @@
                 <el-main :style="flag ? 'text-align:center;' : 'text-align:center;padding:0px;'">
                   <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"
                            @click="allowFile(scope.row.filename, scope.row.pathsUUID)"><i
-                      class="el-icon-edit-outline"></i>
+                      class="el-icon-check"></i>
                     通过
                   </el-link>
                   <el-link type="primary" @click="deleteFile(scope.row.filename, scope.row.pathsUUID)"><i
@@ -141,7 +141,10 @@ export default {
     return {
       flag: true,
       baseHost: '',
-      files: [],
+      files: [{
+        filename: '',
+        pathsUUID: ''
+      }]
     }
   },
   mounted() {
@@ -155,7 +158,7 @@ export default {
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.$router.push({path: '/login'});
-      }, 150000);
+      }, 1500);
       //  指定管理员
     } else if (this.$store.state.userName === 'admin') {
       this.getUsersFile();
@@ -234,53 +237,74 @@ export default {
     },
 
     judgeFileType: function (filename) {
-      if (filename.indexOf('/') !== -1) {
-        return 1;
-      } else if (filename.toLowerCase().indexOf('.mp3') !== -1) {
+      //分辨预览图片或者视频，其他文件不予预览
+      if (filename.toLowerCase().indexOf('.mp4') !== -1) {
         return 2;
-      } else if (filename.toLowerCase().toLowerCase().indexOf('.wav') !== -1) {
-        return 2;
-      } else if (filename.toLowerCase().indexOf('.flac') !== -1) {
-        return 2;
-      } else if (filename.toLowerCase().indexOf('.mp4') !== -1) {
-        return 3;
       } else if (filename.toLowerCase().indexOf('.webm') !== -1) {
-        return 3;
+        return 2;
       } else if (filename.toLowerCase().indexOf('.mkv') !== -1) {
-        return 3;
+        return 2;
       } else if (filename.toLowerCase().indexOf('.jpg') !== -1) {
-        return 4;
+        return 3;
       } else if (filename.toLowerCase().indexOf('.png') !== -1) {
-        return 4;
+        return 3;
       } else if (filename.toLowerCase().indexOf('.jpeg') !== -1) {
-        return 4;
+        return 3;
+      } else {
+        return 1;
       }
+    },
 
-      var text = [
-        '.c',
-        '.cpp',
-        '.css',
-        '.html',
-        '.java',
-        '.js',
-        '.json',
-        '.jsp',
-        '.md',
-        '.txt',
-        '.py',
-        '.pyc',
-        '.sh',
-        '.sql'
-      ]
+    showImages: function (pathsUUID) {
 
-      for (let i = 0; i < text.length; i++) {
-        if (filename.toLowerCase().indexOf(text[i]) !== -1) {
-          return 5;
+      var pictures = [];
+
+      for (let i = 0; i < this.saveFiles.length; i++) {
+        if (this.saveFiles[i].pathsUUID == pathsUUID) {
+          var imgs = 1;
+
+          var url = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.saveFiles[i].path);
+          url = url.replace(/%3A/g, ':');
+          url = url.replace(/%2F/g, '/');
+          pictures.push({src: url, index: i});
+
+          for (let j = i + 1; j < this.saveFiles.length; j++) {
+            if (this.saveFiles[j].filename.toLowerCase().indexOf('.jpg') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.jpeg') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.png') != -1) {
+              var _url = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.saveFiles[j].path);
+              _url = _url.replace(/%3A/g, ':');
+              _url = _url.replace(/%2F/g, '/');
+              pictures.push({src: _url, index: j});
+
+              imgs++;
+              if (imgs == 10) {
+                break;
+              }
+            }
+          }
+
+          if (imgs < 10) {
+            for (let j = 0; j < i; j++) {
+              if (this.saveFiles[j].filename.toLowerCase().indexOf('.jpg') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.jpeg') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.png') != -1) {
+                var n_url = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.saveFiles[j].path);
+                n_url = n_url.replace(/%3A/g, ':');
+                n_url = n_url.replace(/%2F/g, '/');
+                pictures.push({src: n_url, index: j});
+
+                imgs++;
+                if (imgs == 10) {
+                  break;
+                }
+              }
+            }
+          }
+//           this.$viewer.view(i);
+          break;
         }
       }
-      return 6
+      this.images = pictures;
+      this.$viewer.show();
     },
-  //  加入预览
+
   }
 }
 </script>

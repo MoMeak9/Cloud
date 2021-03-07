@@ -73,7 +73,9 @@
 
         <el-col :span="5" v-show="flag" style="overflow:hidden;">
           <span class="el-dropdown-link" style="font-size:14px;">
-            <i class="el-icon-folder el-icon--left"></i>{{ nowFolder.filename === '/' ? nowFolder.filename : nowFolder.filename.replace('/', '') }}
+            <i class="el-icon-folder el-icon--left"></i>{{
+              nowFolder.filename === '/' ? nowFolder.filename : nowFolder.filename.replace('/', '')
+            }}
           </span>
         </el-col>
 
@@ -109,7 +111,6 @@
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-upload2" @click.native="uploadFilesVisible=true">上传文件</el-dropdown-item>
-              <el-dropdown-item icon="el-icon-link" @click.native="getHttpFile()">上传链接</el-dropdown-item>
               <el-dropdown-item icon="el-icon-folder-add"
                                 @click.native="inputFolderName(nowFolder.path, nowFolder.depth + 1)">新建文件夹
               </el-dropdown-item>
@@ -374,14 +375,14 @@ export default {
       moveFilesFlag: false,
       oldFolderPathsUUID: '',
       nowFolder: {filename: '/', depth: 0},
-      nowFolder_backup: {},
       filesSelection: [],
       folders: [],
       tempFiles: [],
       saveFiles: [],
       files: [],
+
       test: '',
-      pictureFlag: false,
+
       images: [],
       musicFlag: false,
       audio: [],
@@ -443,7 +444,7 @@ export default {
       clearTimeout(this.timer);
       this.timer = setTimeout(() => {
         this.$router.push({path: '/login'});
-      }, 1500);
+      }, 150000);
     } else {
       this.baseHost = this.$store.state.baseHost;
       this.userSpaceSize = this.userName === 'admin' ? this.$store.state.adminSpaceSize : this.$store.state.userSpaceSize;
@@ -1336,17 +1337,13 @@ export default {
             }
           }
         }
-
 //           this.$viewer.view(i);
-
         break;
       }
     }
 
     this.images = pictures;
     this.$viewer.show();
-//       this.pictureFlag = true;
-//       console.log(this.images);
   },
   playMusic: function (pathsUUID) {
 
@@ -1788,66 +1785,6 @@ export default {
 
     }
   },
-  getHttpFile: function () {
-    this.$prompt('', '上传链接', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      inputPlaceholder: '请输入文件下载链接......'
-    }).then(({value}) => {
-      value = value.replace(/\(/g, '%28');
-      value = value.replace(/\)/g, '%29');
-
-      var url = /^(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]$/;
-      if (url.test(value)) {
-
-        this.nowFolder_backup = this.nowFolder;
-        this.$message({
-          type: 'info',
-          message: '服务器正在下载文件！请耐心等待！'
-        });
-
-        this.$axios.post('http://' + this.baseHost + '/cloud/pathsController/getHttpFile', this.$qs.stringify({
-          pathsUUID: this.nowFolder.pathsUUID,
-          fileUrl: value
-        })).then((response) => {
-          if (response.data.message === '') {
-
-            if (this.nowFolder_backup.pathsUUID === this.nowFolder.pathsUUID) {
-              this.saveFiles = response.data.pathsDtosList;
-              this.files = this.saveFiles;
-            }
-            this.totalSizes = response.data.totalSizes;
-
-            this.$message({
-              type: 'success',
-              message: '文件 [' + response.data.fileName + '] 下载成功！'
-            });
-          } else {
-            this.$message({
-              type: 'error',
-              message: '服务器下载文件失败！' + response.data.message
-            });
-          }
-        }).catch((error) => {
-          console.log(error);
-          this.$message({
-            type: 'error',
-            message: '服务器下载文件失败！服务器内部错误！'
-          });
-        });
-      } else {
-        this.$message({
-          type: 'error',
-          message: '请输入正确的url链接'
-        });
-      }
-    }).catch(() => {
-      this.$message({
-        type: 'info',
-        message: '取消上传链接！'
-      });
-    });
-  }
 }
 </script>
 
