@@ -472,6 +472,7 @@ export default {
       this.userName = this.$store.state.userName;
     },
     cellClass: function ({row, rowIndex, columnIndex}) {
+      // eslint-disable-next-line no-empty
       if (rowIndex === 0 && columnIndex === 4 && row.name === '../') {
       }
     },
@@ -1030,21 +1031,18 @@ export default {
 //       this.uploadFilesVisible = false;
 //       this.$refs.upload.clearFiles();
   },
+
   uploadSectionFiles: function (param) {
-
-
     var fileObj = param.file;
 
     var fileNameFlag = false;
     for (let i = 0; i < this.saveFiles.length; i++) {
-      if (this.saveFiles[i].filename == fileObj.name) {
+      if (this.saveFiles[i].filename === fileObj.name) {
         fileNameFlag = true;
         break;
       }
     }
-
     if (!fileNameFlag) {
-
       var spaceSize = (this.userSpaceSize / (1024 * 1024) - this.totalSizes) * 1024 * 1024;
 
 //         console.log(this.userSpaceSize / (1024 * 1024));
@@ -1071,7 +1069,7 @@ export default {
         }).then((response) => {
 
           for (let i = 0; i < this.uploadFilesList.length; i++) {
-            if (this.uploadFilesList[i].uid == fileObj.uid) {
+            if (this.uploadFilesList[i].uid === fileObj.uid) {
               this.uploadFilesList[i].status = 'success';
               break;
             }
