@@ -22,11 +22,11 @@ vue-cli + vue2.X + vuex + vue-router + axios + 各种插件
 
 1. 前后端分离开发，各自独立，之间通过JSON进行交互
 2. 使用Elemen-ui组件库完成响应式部署以及部分美化
-3. particles.js（轻量级粒子背景库）实现动态背景美化（开源项目）
-4. Viewer.js 实现图片预览（开源项目）
-5. APlayer实现音乐文件播放（开源项目）
-6. DPlayer视频播放器实现视频播放（开源项目）
-7. Ace实现浏览器上的代码编辑（开源项目）
+3. particles.js（轻量级粒子背景库）实现动态背景美化
+4. Viewer.js 实现图片预览
+5. APlayer实现音乐文件播放
+6. DPlayer视频播放器实现视频播放
+7. Ace实现浏览器上的代码编辑+brace
 
 ## 功能介绍
 
