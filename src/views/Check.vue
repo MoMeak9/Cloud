@@ -259,18 +259,18 @@ export default {
 
       var pictures = [];
 
-      for (let i = 0; i < this.saveFiles.length; i++) {
-        if (this.saveFiles[i].pathsUUID == pathsUUID) {
+      for (let i = 0; i < this.files.length; i++) {
+        if (this.files[i].pathsUUID == pathsUUID) {
           var imgs = 1;
 
-          var url = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.saveFiles[i].path);
+          var url = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.files[i].path);
           url = url.replace(/%3A/g, ':');
           url = url.replace(/%2F/g, '/');
           pictures.push({src: url, index: i});
 
-          for (let j = i + 1; j < this.saveFiles.length; j++) {
-            if (this.saveFiles[j].filename.toLowerCase().indexOf('.jpg') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.jpeg') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.png') != -1) {
-              var _url = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.saveFiles[j].path);
+          for (let j = i + 1; j < this.files.length; j++) {
+            if (this.files[j].filename.toLowerCase().indexOf('.jpg') != -1 || this.files[j].filename.toLowerCase().indexOf('.jpeg') != -1 || this.files[j].filename.toLowerCase().indexOf('.png') != -1) {
+              var _url = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.files[j].path);
               _url = _url.replace(/%3A/g, ':');
               _url = _url.replace(/%2F/g, '/');
               pictures.push({src: _url, index: j});
@@ -284,8 +284,8 @@ export default {
 
           if (imgs < 10) {
             for (let j = 0; j < i; j++) {
-              if (this.saveFiles[j].filename.toLowerCase().indexOf('.jpg') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.jpeg') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.png') != -1) {
-                var n_url = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.saveFiles[j].path);
+              if (this.files[j].filename.toLowerCase().indexOf('.jpg') != -1 || this.files[j].filename.toLowerCase().indexOf('.jpeg') != -1 || this.files[j].filename.toLowerCase().indexOf('.png') != -1) {
+                var n_url = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.files[j].path);
                 n_url = n_url.replace(/%3A/g, ':');
                 n_url = n_url.replace(/%2F/g, '/');
                 pictures.push({src: n_url, index: j});

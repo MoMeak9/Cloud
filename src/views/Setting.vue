@@ -43,10 +43,6 @@
       </el-form-item>
 
       <el-form-item style="user-select: none;">
-        <el-input type="number" v-model="regAge" placeholder="输入年龄"></el-input>
-      </el-form-item>
-
-      <el-form-item style="user-select: none;">
         <el-input type="email" v-model="regEmail" placeholder="输入邮箱地址"></el-input>
       </el-form-item>
 
@@ -75,7 +71,6 @@ export default {
       newPassword: '',
       matchPassword: '',
       regSex: '',
-      regAge: '',
       regEmail: '',
       cmText: 'nothing'
     }
@@ -114,11 +109,11 @@ export default {
           });
     },
     goBack: function () {
-      if (this.userUUID == this.$store.state.userUUID) {
-        this.$router.push({path: '/yun'});
+      if (this.userUUID === this.$store.state.userUUID) {
+        this.$router.push({path: '/cloud'});
       } else {
         this.$store.commit('saveModUserUUID', this.$store.state.userUUID);
-        this.$router.push({path: '/delete'});
+        this.$router.push({path: '/admin'});
       }
     },
     getUserInfo: function () {
@@ -129,7 +124,6 @@ export default {
           this.userUUID = response.data.userUUID;
           this.userName = response.data.userName;
           this.regSex = response.data.regSex;
-          this.regAge = response.data.regAge;
           this.regEmail = response.data.regEmail;
         } else {
           this.$message({
@@ -142,7 +136,7 @@ export default {
       });
     },
     updateUserInfo: function () {
-      if (this.userName != '' && this.password != '' && this.matchPassword != '' && this.regSex != '' && this.regAge != '' && this.regEmail != '') {
+      if (this.userName != '' && this.password != '' && this.matchPassword != '' && this.regSex != '' && this.regEmail != '') {
         var email = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
 
         if (this.newPassword != this.matchPassword) {
@@ -160,7 +154,6 @@ export default {
             userName: this.userName,
             password: this.newPassword,
             regSex: this.regSex,
-            regAge: this.regAge,
             regEmail: this.regEmail,
             userUUID: this.userUUID
           })).then((response) => {
@@ -188,7 +181,7 @@ export default {
                 this.$store.commit('saveModUserUUID', this.$store.state.userUUID);
                 clearTimeout(this.timer);  //清除延迟执行 
                 this.timer = setTimeout(() => {   //设置延迟执行
-                  this.$router.push({path: '/delete'});
+                  this.$router.push({path: '/admin'});
                 }, 1500);
               }
 

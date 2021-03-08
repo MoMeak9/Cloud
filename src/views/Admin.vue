@@ -100,10 +100,6 @@
               <span v-if="scope.row.userName === 'admin'">--</span>
               <el-container v-else>
                 <el-main :style="flag ? 'text-align:center;' : 'text-align:center;padding:0px;'">
-                  <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"
-                           @click="modUser(scope.row.userName, scope.row.userUUID)"><i class="el-icon-edit-outline"></i>
-                    修改
-                  </el-link>
                   <el-link type="primary" @click="deleteUser(scope.row.userName)"><i class="el-icon-circle-close"></i>
                     删除
                   </el-link>
@@ -231,18 +227,6 @@ export default {
           console.log(error);
         });
 
-      }).catch(() => {
-        this.test = 2;
-      });
-    },
-    modUser: function (name, userUUID) {
-      this.$confirm('提示：确定修改用户 [' + name + ']？', '修改用户', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$store.commit('saveUserUUID', userUUID);
-        this.$router.push({path: '/setting'});
       }).catch(() => {
         this.test = 2;
       });
