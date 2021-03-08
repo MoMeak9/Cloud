@@ -212,7 +212,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$axios.post('http://' + this.baseHost + '/mycloud/checkController/delFile', this.$qs.stringify({
+        this.$axios.post('http://' + this.baseHost + '/mycloud/fileSystem/delFile', this.$qs.stringify({
           PathsUUID: this.pathsUUID,
         })).then((response) => {
           if (response.data.message === "") {
@@ -238,13 +238,14 @@ export default {
 
     judgeFileType: function (filename) {
       //分辨预览图片或者视频，其他文件不予预览
-      if (filename.toLowerCase().indexOf('.mp4') !== -1) {
-        return 2;
-      } else if (filename.toLowerCase().indexOf('.webm') !== -1) {
-        return 2;
-      } else if (filename.toLowerCase().indexOf('.mkv') !== -1) {
-        return 2;
-      } else if (filename.toLowerCase().indexOf('.jpg') !== -1) {
+      // if (filename.toLowerCase().indexOf('.mp4') !== -1) {
+      //   return 2;
+      // } else if (filename.toLowerCase().indexOf('.webm') !== -1) {
+      //   return 2;
+      // } else if (filename.toLowerCase().indexOf('.mkv') !== -1) {
+      //   return 2;
+      // } else
+        if (filename.toLowerCase().indexOf('.jpg') !== -1) {
         return 3;
       } else if (filename.toLowerCase().indexOf('.png') !== -1) {
         return 3;

@@ -310,14 +310,14 @@
       <div class="video-bottombar">
         <ul id="pv-buttons">
           <li id="pv-bar-close" class="bar-right bar-button" @click="closeVideo()"><img
-              src="../../../Cloud/src/assets/preview-close.svg" class="img"></li>
+              src="../../../mycloud/src/assets/preview-close.svg" class="img"></li>
           <li id="pv-bar-raw" class="bar-right bar-button" @click="downloadFile(nowVideo.pathsUUID, nowVideo.filename)">
-            <img src="../../../Cloud/src/assets/preview-raw.svg" class="img"></li>
+            <img src="../../../mycloud/src/assets/preview-raw.svg" class="img"></li>
           <li id="pv-bar-next" class="bar-right bar-button" @click="nextVideo(nowVideoIndex)"><img
-              src="../../../Cloud/src/assets/preview-next.svg" class="img"></li>
+              src="../../../mycloud/src/assets/preview-next.svg" class="img"></li>
           <li id="pv-bar-idx" class="bar-right bar-label">{{ nowVideoIndex + 1 }}/{{ videoArray.length }}</li>
           <li id="pv-bar-prev" class="bar-right bar-button" @click="previousVideo(nowVideoIndex)"><img
-              src="../../../Cloud/src/assets/preview-prev.svg" class="img"></li>
+              src="../../../mycloud/src/assets/preview-prev.svg" class="img"></li>
           <li class="bar-left bar-label">{{ nowVideo.filename }}</li>
         </ul>
       </div>
@@ -340,9 +340,9 @@
       <div class="video-bottombar">
         <ul id="pv-buttons">
           <li id="pv-bar-close" class="bar-right bar-button" @click="closeText()"><img
-              src="../../../Cloud/src/assets/preview-close.svg" class="img"></li>
+              src="../../../mycloud/src/assets/preview-close.svg" class="img"></li>
           <li id="pv-bar-raw" class="bar-right bar-button" @click="saveText()"><img
-              src="../../../Cloud/src/assets/icon_save_24px_522050_easyicon.net.png" class="img"></li>
+              src="../../../mycloud/src/assets/icon_save_24px_522050_easyicon.net.png" class="img"></li>
           <li class="bar-left bar-label">{{ nowText.filename }}</li>
         </ul>
       </div>
@@ -353,8 +353,6 @@
 </template>
 
 <script>
-import fileDownload from 'js-file-download';
-
 export default {
   name: 'cloud',
   data() {
@@ -364,6 +362,7 @@ export default {
       userName: '',
       flag: true,
       width: 3,
+
       search: '',
       uploadUrl: '',
       progressPercent: 0,
@@ -1127,7 +1126,7 @@ export default {
 
         if (this.uploadFilesCount == this.uploadFilesList.length) {
 
-          this.$axios.post('http://' + this.baseHost + '/cloud/pathsController/getFiles', this.$qs.stringify({
+          this.$axios.post('http://' + this.baseHost + '/mycloud/pathsController/getFiles', this.$qs.stringify({
             userUUID: this.$store.state.userUUID,
             path: this.nowFolder.path,
             depth: this.nowFolder.depth + 1
@@ -1162,7 +1161,7 @@ export default {
       this.uploadFilesCount++;
 
       if (this.uploadFilesCount == this.uploadFilesList.length) {
-        this.$axios.post('http://' + this.baseHost + '/cloud/pathsController/getFiles', this.$qs.stringify({
+        this.$axios.post('http://' + this.baseHost + '/mycloud/pathsController/getFiles', this.$qs.stringify({
           userUUID: this.$store.state.userUUID,
           path: this.nowFolder.path,
           depth: this.nowFolder.depth + 1
@@ -1200,77 +1199,8 @@ export default {
 //       console.log(this.uploadFilesList);
     this.uploadFilesList = fileList;
   },
-  fileDownLoad: function () {
-    if (this.filesSelection.length != 0) {
-      if (this.filesSelection.length == 1) {
-
-        if (this.filesSelection[0].filename.indexOf("/") == -1) {
-          this.$confirm('提示：您确认要下载文件：[' + this.filesSelection[0].filename + ']么？', '下载文件', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-
-            this.$axios.post('http://' + this.baseHost + '/cloud/pathsController/download', this.$qs.stringify({
-              userUUID: this.$store.state.userUUID,
-              pathsUUID: this.filesSelection[0].pathsUUID
-            }), {
-              responseType: 'arraybuffer'
-            }).then((response) => {
-
-              fileDownload(response.data, this.filesSelection[0].filename);
-
-            }).catch((error) => {
-              console.log(error);
-              this.$message({
-                type: 'error',
-                message: '文件下载失败！服务器内部错误！'
-              });
-            });
-
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '取消下载！'
-            });
-          });
-        } else {
-          this.$confirm('提示：您选择了一个目录，请先选中一个文件后再执行本操作！', '下载文件', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'error'
-          }).then(() => {
-            this.test = 1;
-          }).catch(() => {
-            this.test = 2;
-          });
-        }
-
-      } else {
-        this.$confirm('提示：您选择了多个文件，请先选中一个文件后再执行本操作！', '下载文件', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.test = 1;
-        }).catch(() => {
-          this.test = 2;
-        });
-      }
-    } else {
-      this.$confirm('提示：您还未选择任何文件，请先选中一个文件后再执行本操作！', '下载文件', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.test = 1;
-      }).catch(() => {
-        this.test = 2;
-      });
-    }
-  },
   downloadFile: function (pathsUUID, filename) {
-    var url = 'http://' + this.baseHost + '/cloud/pathsController/download?pathsUUID=' + pathsUUID;
+    var url = 'http://' + this.baseHost + '/mycloud/pathsController/download?pathsUUID=' + pathsUUID;
     this.$confirm('提示：您确认要下载文件：[' + filename + ']么？<br /><a href="' + url + '">复制文件下载链接</a><br />', '下载文件', {
       dangerouslyUseHTMLString: true,
       confirmButtonText: '确定',
@@ -1279,7 +1209,7 @@ export default {
     }).then(() => {
       let ele = document.createElement('a');
       ele.download = filename;
-      ele.href = 'http://' + this.baseHost + '/cloud/pathsController/download?pathsUUID=' + pathsUUID;
+      ele.href = 'http://' + this.baseHost + '/mycloud/pathsController/download?pathsUUID=' + pathsUUID;
       ele.style.display = 'none';
       document.body.appendChild(ele);
       ele.click();
@@ -1303,14 +1233,14 @@ export default {
       if (this.saveFiles[i].pathsUUID == pathsUUID) {
         var imgs = 1;
 
-        var url = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.saveFiles[i].path);
+        var url = encodeURIComponent('http://' + this.baseHost + '/mycloud/fileSystem/' + this.userName + this.saveFiles[i].path);
         url = url.replace(/%3A/g, ':');
         url = url.replace(/%2F/g, '/');
         pictures.push({src: url, index: i});
 
         for (let j = i + 1; j < this.saveFiles.length; j++) {
           if (this.saveFiles[j].filename.toLowerCase().indexOf('.jpg') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.jpeg') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.png') != -1) {
-            var _url = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.saveFiles[j].path);
+            var _url = encodeURIComponent('http://' + this.baseHost + '/mycloud/fileSystem/' + this.userName + this.saveFiles[j].path);
             _url = _url.replace(/%3A/g, ':');
             _url = _url.replace(/%2F/g, '/');
             pictures.push({src: _url, index: j});
@@ -1325,7 +1255,7 @@ export default {
         if (imgs < 10) {
           for (let j = 0; j < i; j++) {
             if (this.saveFiles[j].filename.toLowerCase().indexOf('.jpg') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.jpeg') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.png') != -1) {
-              var n_url = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.saveFiles[j].path);
+              var n_url = encodeURIComponent('http://' + this.baseHost + '/mycloud/fileSystem/' + this.userName + this.saveFiles[j].path);
               n_url = n_url.replace(/%3A/g, ':');
               n_url = n_url.replace(/%2F/g, '/');
               pictures.push({src: n_url, index: j});
@@ -1353,11 +1283,11 @@ export default {
     for (let i = 0; i < this.saveFiles.length; i++) {
       if (this.saveFiles[i].pathsUUID == pathsUUID) {
 
-        var musicUrl = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.saveFiles[i].path);
+        var musicUrl = encodeURIComponent('http://' + this.baseHost + '/mycloud/fileSystem/' + this.userName + this.saveFiles[i].path);
         musicUrl = musicUrl.replace(/%3A/g, ':');
         musicUrl = musicUrl.replace(/%2F/g, '/');
 
-//           var musicUrl = encodeURI('http://' + this.baseHost + '/cloud/pathsController/download?pathsUUID=' + this.saveFiles[i].pathsUUID);
+//           var musicUrl = encodeURI('http://' + this.baseHost + '/mycloud/pathsController/download?pathsUUID=' + this.saveFiles[i].pathsUUID);
 
         if (this.saveFiles[i].filename.indexOf('-') != -1) {
           var names = this.saveFiles[i].filename.split('-');
@@ -1375,10 +1305,10 @@ export default {
         for (let j = i + 1; j < this.saveFiles.length; j++) {
           if (this.saveFiles[j].filename.toLowerCase().indexOf('.mp3') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.wav') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.flac') != -1) {
 
-            var _musicUrl = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.saveFiles[j].path);
+            var _musicUrl = encodeURIComponent('http://' + this.baseHost + '/mycloud/fileSystem/' + this.userName + this.saveFiles[j].path);
             _musicUrl = _musicUrl.replace(/%3A/g, ':');
             _musicUrl = _musicUrl.replace(/%2F/g, '/');
-//               var _musicUrl = encodeURI('http://' + this.baseHost + '/cloud/pathsController/download?pathsUUID=' + this.saveFiles[j].pathsUUID);
+//               var _musicUrl = encodeURI('http://' + this.baseHost + '/mycloud/pathsController/download?pathsUUID=' + this.saveFiles[j].pathsUUID);
 
             if (this.saveFiles[j].filename.indexOf('-') != -1) {
               var _names = this.saveFiles[j].filename.split('-');
@@ -1399,10 +1329,10 @@ export default {
         for (let j = 0; j < i; j++) {
           if (this.saveFiles[j].filename.toLowerCase().indexOf('.mp3') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.wav') != -1 || this.saveFiles[j].filename.toLowerCase().indexOf('.flac') != -1) {
 
-            var n_musicUrl = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.saveFiles[j].path);
+            var n_musicUrl = encodeURIComponent('http://' + this.baseHost + '/mycloud/fileSystem/' + this.userName + this.saveFiles[j].path);
             n_musicUrl = n_musicUrl.replace(/%3A/g, ':');
             n_musicUrl = n_musicUrl.replace(/%2F/g, '/');
-//               var n_musicUrl = encodeURI('http://' + this.baseHost + '/cloud/pathsController/download?pathsUUID=' + this.saveFiles[j].pathsUUID);
+//               var n_musicUrl = encodeURI('http://' + this.baseHost + '/mycloud/pathsController/download?pathsUUID=' + this.saveFiles[j].pathsUUID);
 
             if (this.saveFiles[j].filename.indexOf('-') != -1) {
               var n_names = this.saveFiles[j].filename.split('-');
@@ -1434,7 +1364,7 @@ export default {
 
   },
   updateFiles: function (path, depth) {
-    this.$axios.post('http://' + this.baseHost + '/cloud/pathsController/getFiles', this.$qs.stringify({
+    this.$axios.post('http://' + this.baseHost + '/mycloud/pathsController/getFiles', this.$qs.stringify({
       userUUID: this.$store.state.userUUID,
       path: path,
       depth: depth
@@ -1476,7 +1406,7 @@ export default {
     this.nowVideo = this.videoArray[0];
     this.nowVideoIndex = 0;
 
-    var videoUrl = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.nowVideo.path);
+    var videoUrl = encodeURIComponent('http://' + this.baseHost + '/mycloud/fileSystem/' + this.userName + this.nowVideo.path);
     videoUrl = videoUrl.replace(/%3A/g, ':');
     videoUrl = videoUrl.replace(/%2F/g, '/');
 
@@ -1500,10 +1430,10 @@ export default {
 
       this.nowVideo = this.videoArray[this.nowVideoIndex];
 
-      var videoUrl = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.nowVideo.path);
+      var videoUrl = encodeURIComponent('http://' + this.baseHost + '/mycloud/fileSystem/' + this.userName + this.nowVideo.path);
       videoUrl = videoUrl.replace(/%3A/g, ':');
       videoUrl = videoUrl.replace(/%2F/g, '/');
-//          var videoUrl = encodeURI('http://' + this.baseHost + '/cloud/pathsController/download?pathsUUID=' + this.nowVideo.pathsUUID);
+//          var videoUrl = encodeURI('http://' + this.baseHost + '/mycloud/pathsController/download?pathsUUID=' + this.nowVideo.pathsUUID);
       this.$refs.dplayer.dp.switchVideo({url: videoUrl});
 
       this.$refs.dplayer.dp.pause();
@@ -1528,7 +1458,7 @@ export default {
 
       this.nowVideo = this.videoArray[this.nowVideoIndex];
 
-      var videoUrl = encodeURIComponent('http://' + this.baseHost + '/cloud/fileSystem/' + this.userName + this.nowVideo.path);
+      var videoUrl = encodeURIComponent('http://' + this.baseHost + '/mycloud/fileSystem/' + this.userName + this.nowVideo.path);
       videoUrl = videoUrl.replace(/%3A/g, ':');
       videoUrl = videoUrl.replace(/%2F/g, '/');
       this.$refs.dplayer.dp.switchVideo({url: videoUrl});
@@ -1630,7 +1560,7 @@ export default {
         for (let j = 0; j < text.length; j++) {
           if (this.saveFiles[i].filename.toLowerCase().indexOf(text[j]) !== -1) {
 
-            this.$axios.post('http://' + this.baseHost + '/cloud/pathsController/getText', this.$qs.stringify({
+            this.$axios.post('http://' + this.baseHost + '/mycloud/pathsController/getText', this.$qs.stringify({
               userUUID: this.$store.state.userUUID,
               pathsUUID: pathsUUID
             })).then((response) => {
@@ -1661,7 +1591,7 @@ export default {
     }
   },
   saveText: function () {
-    this.$axios.post('http://' + this.baseHost + '/cloud/pathsController/saveText', this.$qs.stringify({
+    this.$axios.post('http://' + this.baseHost + '/mycloud/pathsController/saveText', this.$qs.stringify({
       userUUID: this.$store.state.userUUID,
       folderPathsUUID: this.nowFolder.pathsUUID,
       pathsUUID: this.nowText.pathsUUID,
@@ -1689,7 +1619,7 @@ export default {
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      this.$axios.post('http://' + this.baseHost + '/cloud/pathsController/saveText', this.$qs.stringify({
+      this.$axios.post('http://' + this.baseHost + '/mycloud/pathsController/saveText', this.$qs.stringify({
         userUUID: this.$store.state.userUUID,
         pathsUUID: this.nowText.pathsUUID,
         textContent: this.textContent
@@ -1766,7 +1696,7 @@ export default {
           this.files = _tempFiles;
         }
       } else {
-        this.$axios.post('http://' + this.baseHost + '/cloud/pathsController/getFiles', this.$qs.stringify({
+        this.$axios.post('http://' + this.baseHost + '/mycloud/pathsController/getFiles', this.$qs.stringify({
           userUUID: this.$store.state.userUUID,
           path: this.nowFolder.path,
           depth: this.nowFolder.depth + 1
@@ -1789,7 +1719,7 @@ export default {
 </script>
 
 <style scoped>
-@import '../../../Cloud/src/assets/css/style.css';
+@import '../../../mycloud/src/assets/css/style.css';
 
 #cloud {
   background: url("../assets/image/68128465.png") fixed no-repeat top;
