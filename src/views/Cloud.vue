@@ -46,7 +46,7 @@
                   </el-tooltip>
                 </el-dropdown-item>
                 <el-dropdown-item icon="el-icon-setting" @click.native="goSetting()">修改信息</el-dropdown-item>
-                <el-dropdown-item icon="el-icon-user" v-if="userName === 'admin'" @click.native="goDelete()">管理用户
+                <el-dropdown-item icon="el-icon-user" v-if="userName === 'admin'" @click.native="goAdmin()">管理用户
                 </el-dropdown-item>
                 <el-dropdown-item icon="el-icon-warning-outline" @click.native="loginOut()">退出登录</el-dropdown-item>
               </el-dropdown-menu>
@@ -518,8 +518,8 @@ export default {
     goSetting: function () {
       this.$router.push({path: '/setting'});
     },
-    goDelete: function () {
-      this.$router.push({path: '/delete'});
+    goAdmin: function () {
+      this.$router.push({path: '/Admin'});
     },
     filesListInit: function () {
       this.$axios.post('http://' + this.baseHost + '/mycloud/pathsController/getFiles', this.$qs.stringify({
@@ -532,10 +532,9 @@ export default {
         this.files = this.saveFiles;
         this.totalSizes = response.data.totalSizes;
 
-        this.nowFolder = {pathsUUID: response.data.rootPathUUID, filename: '/', path: '/', depth: '0'};
+        this.nowFolder = {pathsUUID: response.data.pathUUID, filename: '/', path: '/', depth: '0'};
         this.folders.push(this.nowFolder);
 
-//         console.log(response.data.rootPathUUID);
       }).catch((error) => {
         console.log(error);
         this.$message({
@@ -1028,8 +1027,6 @@ export default {
   },
   uploadFiles: function () {
     this.$refs.upload.submit();
-//       this.uploadFilesVisible = false;
-//       this.$refs.upload.clearFiles();
   },
 
   uploadSectionFiles: function (param) {
@@ -1050,7 +1047,6 @@ export default {
 
       if (fileObj.size <= spaceSize) {
         var form = new FormData();
-        // 文件对象
         form.append("userUUID", this.$store.state.userUUID);
         form.append("pathsUUID", this.nowFolder.pathsUUID);
         form.append("files", fileObj);
