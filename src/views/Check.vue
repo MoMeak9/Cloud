@@ -234,7 +234,7 @@ export default {
     },
 
     judgeFileType: function (filename) {
-      //分辨预览图片或者视频，其他文件不予预览
+      //分辨预览图片，其他文件不予预览
       // if (filename.toLowerCase().indexOf('.mp4') !== -1) {
       //   return 2;
       // } else if (filename.toLowerCase().indexOf('.webm') !== -1) {
@@ -295,7 +295,6 @@ export default {
               }
             }
           }
-//           this.$viewer.view(i);
           break;
         }
       }
