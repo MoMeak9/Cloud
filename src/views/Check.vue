@@ -87,23 +87,6 @@
                 </el-main>
               </el-container>
 
-<!--              <el-container v-else-if="judgeFileType(scope.row.filename) === 2">-->
-<!--                <el-main :style="flag ? 'text-align:center;' : 'text-align:center;padding:0px;'">-->
-<!--                  <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"-->
-<!--                           @click="playVideo(scope.row.pathsUUID)"><i class="el-icon-video-play"></i> 播放-->
-<!--                  </el-link>-->
-<!--                  <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"-->
-<!--                           @click="allowFile(scope.row.filename, scope.row.pathsUUID)"><i-->
-<!--                      class="el-icon-check"></i>-->
-<!--                    通过-->
-<!--                  </el-link>-->
-<!--                  <el-link type="primary" @click="deleteFile(scope.row.pathsUUID,scope.row.filename)"><i-->
-<!--                      class="el-icon-document-delete"></i>-->
-<!--                    删除-->
-<!--                  </el-link>-->
-<!--                </el-main>-->
-<!--              </el-container>-->
-
               <el-container v-else>
                 <el-main :style="flag ? 'text-align:center;' : 'text-align:center;padding:0px;'">
                   <el-link type="primary" :style="flag ? 'margin-right:10px;' : ''"
@@ -131,6 +114,11 @@
         </el-form>
       </el-footer>
     </el-container>
+
+    <viewer :images="images" @inited="inited">
+      <img v-for="item in images" :src="item.src" :key="item.index" height="100" v-show="false">
+    </viewer>
+
   </div>
 </template>
 
@@ -142,6 +130,7 @@ export default {
       flag: true,
       baseHost: '',
       files: [],
+      images: [],
     }
   },
   mounted() {
@@ -227,6 +216,9 @@ export default {
           });
         });
       });
+    },
+    inited: function (viewer) {
+      this.$viewer = viewer;
     },
 
     goYun: function () {

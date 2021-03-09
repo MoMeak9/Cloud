@@ -279,17 +279,6 @@
               align="center"
               type="selection"
               :width="flag ? '55' : ''">
-
-            <!--             <template slot-scope="scope">
-                          <span v-show="scope.row.name=='../'" type="primary" @click="log(scope)"> -- </span>
-                          <label class="el-checkbox" v-else>
-                            <span class="el-checkbox__input">
-                              <span class="el-checkbox__inner"></span>
-                              <input type="checkbox" aria-hidden="false" class="el-checkbox__original" value="">
-                            </span>
-                          </label>
-                        </template> -->
-
           </el-table-column>
 
         </el-table>
