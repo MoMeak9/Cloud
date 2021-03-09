@@ -310,14 +310,14 @@
       <div class="video-bottombar">
         <ul id="pv-buttons">
           <li id="pv-bar-close" class="bar-right bar-button" @click="closeVideo()"><img
-              src="../../../mycloud/src/assets/preview-close.svg" class="img"></li>
+              src="../../src/assets/preview-close.svg" class="img"></li>
           <li id="pv-bar-raw" class="bar-right bar-button" @click="downloadFile(nowVideo.pathsUUID, nowVideo.filename)">
-            <img src="../../../mycloud/src/assets/preview-raw.svg" class="img"></li>
+            <img src="../../src/assets/preview-raw.svg" class="img"></li>
           <li id="pv-bar-next" class="bar-right bar-button" @click="nextVideo(nowVideoIndex)"><img
-              src="../../../mycloud/src/assets/preview-next.svg" class="img"></li>
+              src="../../src/assets/preview-next.svg" class="img"></li>
           <li id="pv-bar-idx" class="bar-right bar-label">{{ nowVideoIndex + 1 }}/{{ videoArray.length }}</li>
           <li id="pv-bar-prev" class="bar-right bar-button" @click="previousVideo(nowVideoIndex)"><img
-              src="../../../mycloud/src/assets/preview-prev.svg" class="img"></li>
+              src="../../src/assets/preview-prev.svg" class="img"></li>
           <li class="bar-left bar-label">{{ nowVideo.filename }}</li>
         </ul>
       </div>
@@ -340,9 +340,9 @@
       <div class="video-bottombar">
         <ul id="pv-buttons">
           <li id="pv-bar-close" class="bar-right bar-button" @click="closeText()"><img
-              src="../../../mycloud/src/assets/preview-close.svg" class="img"></li>
+              src="../../src/assets/preview-close.svg" class="img"></li>
           <li id="pv-bar-raw" class="bar-right bar-button" @click="saveText()"><img
-              src="../../../mycloud/src/assets/icon_save_24px_522050_easyicon.net.png" class="img"></li>
+              src="../../src/assets/icon_save_24px_522050_easyicon.net.png" class="img"></li>
           <li class="bar-left bar-label">{{ nowText.filename }}</li>
         </ul>
       </div>
@@ -1715,7 +1715,7 @@ export default {
 </script>
 
 <style scoped>
-@import '../../../mycloud/src/assets/css/style.css';
+@import '../../src/assets/css/style.css';
 
 #cloud {
   background: url("../assets/image/68128465.png") fixed no-repeat top;
