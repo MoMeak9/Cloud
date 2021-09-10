@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "@moefe/vue-aplayer": "^2.0.0-beta.5",
@@ -14,12 +13,13 @@
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "brace": "^0.11.1",
-    "compression-webpack-plugin": "^7.1.2",
+    "compression-webpack-plugin": "^8.0.1",
     "core-js": "^3.9.1",
     "default-passive-events": "^1.0.10",
     "dplayer": "^1.26.0",
     "element-ui": "^2.15.1",
     "js-file-download": "^0.4.12",
+    "package": "^1.0.1",
     "particles.js": "^2.0.0",
     "qs": "^6.9.6",
     "v-viewer": "^1.5.1",
